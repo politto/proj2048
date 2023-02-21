@@ -11,7 +11,7 @@ public class numBox extends JLabel{
         this.setValue((Math.random() / 2 > 0.5)? 2 : 4);
     }
 
-    void noValue() {
+    void clearValue() {
         this.setText(" ");
         value = 0;
     }

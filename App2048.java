@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import java.lang.IndexOutOfBoundsException;
 
 import javax.swing.JFrame;
 import javax.swing.JLayer;
@@ -84,8 +85,33 @@ public class App2048 implements App2048interface{
 
     }
 
-    private void numChangeOnPressed(){
+    private void numChangeOnPressed(String dir){
+        for (int i = 0; i < 4; i++){
+            for (int j = 0; j < 4; j++){
+                numBox numBox = numMap.get(i).get(j);
+                numBox nextBox = numMap.get(0).get(0);
 
+                try{
+                    switch (dir) {
+                        case "north" : nextBox = numMap.get(i - 1).get(j); break;
+                        case "east" : nextBox = numMap.get(i).get(j + 1); break;
+                        case "sounth" : nextBox = numMap.get(i + 1).get(j); break;
+                        case "west" : nextBox = numMap.get(i).get(j - 1); break;
+                        default : System.out.println("Direction input error!"); System.exit(1);
+                    }
+                    
+                    if(numBox.equals(nextBox)) {
+                        nextBox.increment();
+                        numBox.clearValue();
+                    }
+                }
+                catch (ArrayIndexOutOfBoundsException e){
+                    continue;
+                }
+                
+                
+            }
+        }
     }
 
     private Color bgColors(int num){
