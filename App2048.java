@@ -85,7 +85,7 @@ public class App2048 implements App2048interface{
     }
 
     private void numChangeOnPressed(){
-
+        
     }
 
     private Color bgColors(int num){
