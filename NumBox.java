@@ -23,7 +23,6 @@ public class NumBox extends JLabel{
     int getValue() {
         return this.value;
     }
-    
 
     void setValue(int v) {
         this.setText(Integer.toString(v));

@@ -12,6 +12,7 @@ import java.lang.IndexOutOfBoundsException;
 
 import javax.swing.JFrame;
 import javax.swing.JLayer;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 
@@ -21,13 +22,13 @@ public class App2048 implements App2048interface{
     private JLabel header;
     private ArrayList<ArrayList<NumBox>> numMap;
     private JLabel desc;
-
+    private JLabel lbScore;
+    private int intScore;
     public App2048(){
         window = new JFrame("Easy 2048");
         window.setSize(500, 700);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
-        
         buildUpComponents();
         startgame();
         
@@ -73,11 +74,11 @@ public class App2048 implements App2048interface{
 
     private void buildUpComponents(){
 
-        header = new JLabel("The easy 2048 game", SwingConstants.CENTER);
+        header = new JLabel("The Easy 2048 Game", SwingConstants.CENTER);
         header.setPreferredSize(new Dimension(450,50));
         header.setFont(new Font("th sarabunPSK", Font.PLAIN, 36));
-        numMap = new ArrayList<ArrayList<NumBox>>(4);
-        
+        numMap = new ArrayList<ArrayList<NumBox>>(4); 
+        lbScore = new JLabel("Score : ",SwingConstants.CENTER);
         for (int i = 0; i < 4; i++){
             numMap.add(new ArrayList<NumBox>());
             for (int j = 0; j < 4; j++){
@@ -86,22 +87,33 @@ public class App2048 implements App2048interface{
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox.setPreferredSize(new Dimension(100, 100));
                 NumBox.setFont(new Font("th sarabunPSK", Font.PLAIN, 40));
+                //NumBox nb =  numMap.get(i).get(j);
+                // if(nb.getValue() > 64){
+                //     nb.setForeground(Color.WHITE);
+                //     }
+                // else{
+                //     nb.setForeground(Color.BLACK);
+                // }
                 NumBox.setOpaque(true);
             }
         }
         desc = new JLabel("Use your Keyboard arrow keys to play this game[^v<>]", SwingConstants.CENTER);
         desc.setPreferredSize(new Dimension(450, 100));
         desc.setFont(new Font("th sarabunPSK", Font.PLAIN, 20));
-
+        lbScore.setPreferredSize(new Dimension(450, 100));
+        lbScore.setFont(new Font("th sarabunPSK", Font.PLAIN, 20));
         window.setLayout(new FlowLayout());
-
+        
         window.add(header);
+        window.add(lbScore);
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
                 window.add(numMap.get(i).get(j));
             }
         }
+        
         window.add(desc);
+        
 
     }
 
@@ -190,6 +202,11 @@ public class App2048 implements App2048interface{
 
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox nextBox = numMap.get(0).get(0);
+                if(NumBox.getValue() == 2048){
+                    String show = "VICTRORY\nScore :" + intScore;
+                    JOptionPane.showMessageDialog(null, show );
+
+                }
 
                 try{
                     switch (dir) {
@@ -205,6 +222,8 @@ public class App2048 implements App2048interface{
                         NumBox.clearValue();
                         i = beginx;
                         j = beginy;
+                        intScore++;
+                        lbScore.setText("Score : " + intScore);
                     }
                 }
                 catch (ArrayIndexOutOfBoundsException e){
@@ -224,6 +243,13 @@ public class App2048 implements App2048interface{
             for (int j = 0; j < 4; j++){
                     NumBox nb = numMap.get(i).get(j);
                     nb.setBackground(bgColorsSelection(nb.getValue()));
+                    if(nb.getValue() > 64){
+                        nb.setForeground(Color.WHITE);
+                        }
+                    else{
+                        nb.setForeground(Color.BLACK);
+                    }
+                    
                 }
             }
         }
@@ -232,46 +258,46 @@ public class App2048 implements App2048interface{
 
     private Color bgColorsSelection(int num) {
 
-        Color ret = Color.WHITE;
+        Color ret = new Color(126,171,139);
         switch(num){
             case(2): {
-                ret = Color.LIGHT_GRAY;
+                ret = new Color(193,183,132);
                 break;
             }
             case(4): {
-                ret = Color.DARK_GRAY;
+                ret = new Color(190,175,95);
                 break;
             }
             case(8): {
-                ret = Color.MAGENTA;
+                ret = new Color(150,140,49);
                 break;
             }
             case(16): {
-                ret = Color.PINK;
+                ret = new Color(110,100,55);
                 break;
             }
             case(32): {
-                ret = Color.YELLOW;
+                ret = new Color(190,190,190);
                 break;
             }
             case(64): {
-                ret = new Color(105, 16, 255);
+                ret = new Color(115,115,90);
                 break;
             }
             case(128): {
-                ret = new Color(121, 99, 160);
+                ret = new Color(81, 81, 52);
                 break;
             }
             case(256): {
-                ret = new Color(224, 49, 255);
+                ret = new Color(45, 45, 30);
                 break;
             }
             case(512): {
-                ret = new Color(255, 49, 149);
+                ret = new Color(75,40,30);
                 break;
             }
             case(1024): {
-                ret = new Color(255, 49, 52, 1);
+                ret = new Color(38,6,6);
                 break;
             }
             case(2048): {
