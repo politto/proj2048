@@ -19,7 +19,7 @@ public class App2048 implements App2048interface{
     private JFrame window;
 
     private JLabel header;
-    private ArrayList<ArrayList<NumBox>> numMap;
+    private ArrayList<ArrayList<numBox>> numMap;
 
     public App2048(){
         window = new JFrame("Easy 2048");
@@ -74,14 +74,14 @@ public class App2048 implements App2048interface{
         header = new JLabel("The easy 2048 game", SwingConstants.CENTER);
         header.setPreferredSize(new Dimension(450,50));
         header.setFont(new Font("th sarabunPSK", Font.PLAIN, 36));
-        numMap = new ArrayList<ArrayList<NumBox>>(4);
+        numMap = new ArrayList<ArrayList<numBox>>(4);
         
         for (int i = 0; i < 4; i++){
-            numMap.add(new ArrayList<NumBox>());
+            numMap.add(new ArrayList<numBox>());
             for (int j = 0; j < 4; j++){
-                numMap.get(i).add(new NumBox(" ", SwingConstants.CENTER));
+                numMap.get(i).add(new numBox(" ", SwingConstants.CENTER));
 
-                NumBox NumBox = numMap.get(i).get(j);
+                numBox NumBox = numMap.get(i).get(j);
                 NumBox.setPreferredSize(new Dimension(100, 100));
                 NumBox.setFont(new Font("th sarabunPSK", Font.PLAIN, 40));
                 NumBox.setOpaque(true);
@@ -104,7 +104,7 @@ public class App2048 implements App2048interface{
         for (int i = 0; i < 4; i++) {
             int k = 0;
             for (int j = 0; j < 4; j++) {
-                NumBox box = numMap.get(i).get(j);
+                numBox box = numMap.get(i).get(j);
                 if (box.getValue() != 0) {
                     if (k != j) {
                         numMap.get(i).get(k).setValue(box.getValue());
@@ -120,7 +120,7 @@ public class App2048 implements App2048interface{
         for (int i = 0; i < 4; i++) {
             int k = 3;
             for (int j = 3; j >= 0; j--) {
-                NumBox box = numMap.get(i).get(j);
+                numBox box = numMap.get(i).get(j);
                 if (box.getValue() != 0) {
                     if (k != j) {
                         numMap.get(i).get(k).setValue(box.getValue());
@@ -136,7 +136,7 @@ public class App2048 implements App2048interface{
         for (int j = 0; j < 4; j++) {
             int k = 3;
             for (int i = 3; i >= 0; i--) {
-                NumBox box = numMap.get(i).get(j);
+                numBox box = numMap.get(i).get(j);
                 if (box.getValue() != 0) {
                     if (k != i) {
                         numMap.get(k).get(j).setValue(box.getValue());
@@ -152,7 +152,7 @@ public class App2048 implements App2048interface{
         for (int j = 0; j < 4; j++) {
             int k = 0;
             for (int i = 0; i < 4; i++) {
-                NumBox box = numMap.get(i).get(j);
+                numBox box = numMap.get(i).get(j);
                 if (box.getValue() != 0) {
                     if (k != i) {
                         numMap.get(k).get(j).setValue(box.getValue());
@@ -182,8 +182,8 @@ public class App2048 implements App2048interface{
         for (int i = beginx; i < termimatex; i++){
             for (int j = beginy; j < termimatey; j++){
 
-                NumBox NumBox = numMap.get(i).get(j);
-                NumBox nextBox = numMap.get(0).get(0);
+                numBox NumBox = numMap.get(i).get(j);
+                numBox nextBox = numMap.get(0).get(0);
 
                 try{
                     switch (dir) {
@@ -213,7 +213,7 @@ public class App2048 implements App2048interface{
 
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
-                    NumBox nb = numMap.get(i).get(j);
+                    numBox nb = numMap.get(i).get(j);
                     nb.setBackground(bgColorsSelection(nb.getValue()));
                 }
             }
@@ -283,7 +283,7 @@ public class App2048 implements App2048interface{
             randomy = (int)(Math.random() * 4);
         }
 
-        NumBox startBox = numMap.get(randomx).get(randomy);
+        numBox startBox = numMap.get(randomx).get(randomy);
 
         if (midgame) startBox.setValue(Math.random() > 0.5 ? 2 : 4);
         else startBox.setValue(2);
