@@ -55,6 +55,25 @@ public class App2048 implements App2048interface{
         startBox1.setBackground(bgColors(startBox1.getValue()));
         startBox2.setBackground(bgColors(startBox2.getValue()));
 
+        window.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                switch(e.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:
+                        moveLeft();
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        moveRight();
+                        break;
+                    case KeyEvent.VK_UP:
+                       moveUp();
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        moveDown();
+                        break;
+                }
+            }
+        });
+
     }
 
     private void buildUpComponents(){
@@ -89,78 +108,70 @@ public class App2048 implements App2048interface{
 
     }
 
-    private void swap(){
-        var l= KeyEvent.VK_LEFT;
-        var r=KeyEvent.VK_RIGHT;
-        var u = KeyEvent.VK_UP;
-        var d = KeyEvent.VK_DOWN;
-
-        window.addKeyListener(new KeyAdapter() {
-            public void keyPressed(KeyEvent e) {
-              int keyCode = e.getKeyCode();
-              if (keyCode == KeyEvent.VK_UP) {
-                 //up
-            for(int i = 0;i<4;i++){
-                for (int j = 0;j<4;j++){
-                    numBox next = numMap.get(j).get(i);
-                    numBox idx = numMap.get(0).get(0);
-                    if(next.getValue()!=0){
-                        idx=next;
+    private void moveLeft() {
+        for (int i = 0; i < 4; i++) {
+            int k = 0;
+            for (int j = 0; j < 4; j++) {
+                numBox box = numMap.get(i).get(j);
+                if (box.getValue() != 0) {
+                    if (k != j) {
+                        numMap.get(i).get(k).setValue(box.getValue());
+                        box.clearValue();
+                    }
+                    k++;
                 }
-                continue;
             }
         }
-              }
-              else if (keyCode == KeyEvent.VK_DOWN) {
-                //down
-            for(int i = 0;i<4;i++){
-                for (int j = 3;j==0;j--){
-                    numBox next = numMap.get(j).get(i);
-                    numBox idx = numMap.get(3).get(0);
-                    if(next.getValue()!=0){
-                        idx=next;
-                }
-                continue;
-            }
-        }
-              }
-              else if (keyCode == KeyEvent.VK_LEFT) {
-                 //left
-                for(int i = 0;i<4;i++){
-            for (int j = 0;j<4;j++){
-                numBox next = numMap.get(i).get(j);
-                numBox idx = numMap.get(0).get(0);
-                if(next.getValue()!=0){
-                    idx=next;
-                }
-                continue;
-            }
-        }   
-              }
-              else if (keyCode == KeyEvent.VK_RIGHT) {
-              //right
-        for(int i = 0;i<4;i++){
-            for (int j = 3;j==0;j--){
-                numBox next = numMap.get(i).get(j);
-                numBox idx = numMap.get(0).get(3);
-                if(next.getValue()!=0){
-                    idx=next;
-                }
-                continue;
-                }
-            }
-              }
-            }
-          });
-        
-        
-           
-       
-        
-
-
     }
 
+    private void moveRight() {
+        for (int i = 0; i < 4; i++) {
+            int k = 3;
+            for (int j = 3; j >= 0; j--) {
+                numBox box = numMap.get(i).get(j);
+                if (box.getValue() != 0) {
+                    if (k != j) {
+                        numMap.get(i).get(k).setValue(box.getValue());
+                        box.clearValue();
+                    }
+                    k--;
+                }
+            }
+        }
+    }
+    
+    private void moveDown() {
+        for (int j = 0; j < 4; j++) {
+            int k = 3;
+            for (int i = 3; i >= 0; i--) {
+                numBox box = numMap.get(i).get(j);
+                if (box.getValue() != 0) {
+                    if (k != i) {
+                        numMap.get(k).get(j).setValue(box.getValue());
+                        box.clearValue();
+                    }
+                    k--;
+                }
+            }
+        }
+    }
+    
+    private void moveUp() {
+        for (int j = 0; j < 4; j++) {
+            int k = 0;
+            for (int i = 0; i < 4; i++) {
+                numBox box = numMap.get(i).get(j);
+                if (box.getValue() != 0) {
+                    if (k != i) {
+                        numMap.get(k).get(j).setValue(box.getValue());
+                        box.clearValue();
+                    }
+                    k++;
+                }
+            }
+        }
+    }
+    
 
     private void numChangeOnPressed(String dir){
         for (int i = 0; i < 4; i++){
