@@ -19,11 +19,16 @@ public class App2048 implements App2048interface{
     private JFrame window;
 
     private JLabel header;
+<<<<<<< HEAD
     private ArrayList<ArrayList<numBox>> numMap;
+=======
+    private ArrayList<ArrayList<NumBox>> numMap;
+    private JLabel desc;
+>>>>>>> main
 
     public App2048(){
         window = new JFrame("Easy 2048");
-        window.setSize(500, 600);
+        window.setSize(500, 700);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
         
@@ -52,17 +57,18 @@ public class App2048 implements App2048interface{
                         moveRight();
                         break;
                     case KeyEvent.VK_UP:
-                        moveUp();
                         numChangeOnPressed("north");
+                        moveUp();
                         break;
                     case KeyEvent.VK_DOWN:
-                        moveDown();
                         numChangeOnPressed("sounth");
+                        moveDown();
                         break;
                 }
 
                 randomNumSpawn(true);
                 painter();
+                cligame();
 
             }
         });
@@ -87,6 +93,9 @@ public class App2048 implements App2048interface{
                 NumBox.setOpaque(true);
             }
         }
+        desc = new JLabel("Use your Keyboard arrow keys to play this game[^v<>]", SwingConstants.CENTER);
+        desc.setPreferredSize(new Dimension(450, 100));
+        desc.setFont(new Font("th sarabunPSK", Font.PLAIN, 20));
 
         window.setLayout(new FlowLayout());
 
@@ -96,6 +105,7 @@ public class App2048 implements App2048interface{
                 window.add(numMap.get(i).get(j));
             }
         }
+        window.add(desc);
 
     }
 
@@ -172,13 +182,13 @@ public class App2048 implements App2048interface{
         int termimatex = 4;
         int termimatey = 4;
 
-        switch (dir) {
-            case "north" : beginy = 1; break;
-            case "east" : termimatex = 3; break;
-            case "sounth" : termimatey = 3; break;
-            case "west" : beginx = 1; break;
-            default : System.out.println("Direction input error!(1)"); System.exit(1);
-        }
+        // switch (dir) {
+        //     case "north" : beginy = 1; break;
+        //     case "east" : termimatex = 3; break;
+        //     case "sounth" : termimatey = 3; break;
+        //     case "west" : beginx = 1; break;
+        //     default : System.out.println("Direction input error!(1)"); System.exit(1);
+        // }
         for (int i = beginx; i < termimatex; i++){
             for (int j = beginy; j < termimatey; j++){
 
@@ -200,6 +210,9 @@ public class App2048 implements App2048interface{
                         i = beginx;
                         j = beginy;
                     }
+                }
+                catch (ArrayIndexOutOfBoundsException e){
+                    continue;
                 }
                 catch (IndexOutOfBoundsException e){
                     continue;
@@ -288,6 +301,16 @@ public class App2048 implements App2048interface{
         if (midgame) startBox.setValue(Math.random() > 0.5 ? 2 : 4);
         else startBox.setValue(2);
 
+    }
+
+    private void cligame(){
+        for(int i =0; i< 4; i++){
+            for(int j = 0; j< 4; j++){
+                System.out.printf("%4d", numMap.get(i).get(j).getValue());
+            }
+            System.out.print("\n");
+        }
+        System.out.print("\n");
     }
 
 }
