@@ -1,9 +1,9 @@
 import javax.swing.JLabel;
-public class numBox extends JLabel{
+public class NumBox extends JLabel{
 
     private int value;
 
-    numBox(String txt, int property){
+    NumBox(String txt, int property){
         super(txt,property);
     }
 
@@ -17,7 +17,7 @@ public class numBox extends JLabel{
     }
 
     void increment() {
-        value *= 2;
+        this.setValue(this.value*=2);
     }
 
     int getValue() {
@@ -28,9 +28,10 @@ public class numBox extends JLabel{
     void setValue(int v) {
         this.setText(Integer.toString(v));
         this.value = v;
+        if (this.value == 0) this.clearValue();
     }
 
-    boolean isEquals(numBox other){
+    boolean isEquals(NumBox other){
         if (this.getValue() == other.getValue()){
             return true;
         }

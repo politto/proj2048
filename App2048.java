@@ -4,12 +4,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.JFrame;
 
 import java.lang.IndexOutOfBoundsException;
 
@@ -22,78 +19,72 @@ public class App2048 implements App2048interface{
     private JFrame window;
 
     private JLabel header;
-    private ArrayList<ArrayList<numBox>> numMap;
+    private ArrayList<ArrayList<NumBox>> numMap;
 
     public App2048(){
         window = new JFrame("Easy 2048");
         window.setSize(500, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
-
+        
+        buildUpComponents();
         startgame();
         
     }
 
     private void startgame(){
 
-        int random1 = (int)(Math.random() * 4);
-        int random2 = (int)(Math.random() * 4);
-        int random3 = (int)(Math.random() * 4);
-        int random4 = (int)(Math.random() * 4);
-
-        while(random3 == random1) random3 = (int)(Math.random() * 4);
-        while(random4 == random2) random4 = (int)(Math.random() * 4);
+        randomNumSpawn(false);
+        randomNumSpawn(false);
         
-        buildUpComponents();
-
-        numBox startBox1 = numMap.get(random1).get(random2);
-        numBox startBox2 = numMap.get(random3).get(random4);
-        
-        startBox1.setValue(2);
-        startBox2.setValue(2);
-        
-        startBox1.setBackground(bgColors(startBox1.getValue()));
-        startBox2.setBackground(bgColors(startBox2.getValue()));
+        painter();
 
         window.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
+
                 switch(e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
+                        numChangeOnPressed("west");
                         moveLeft();
                         break;
                     case KeyEvent.VK_RIGHT:
+                        numChangeOnPressed("east");
                         moveRight();
                         break;
                     case KeyEvent.VK_UP:
-                       moveUp();
+                        moveUp();
+                        numChangeOnPressed("north");
                         break;
                     case KeyEvent.VK_DOWN:
                         moveDown();
+                        numChangeOnPressed("sounth");
                         break;
                 }
+
+                randomNumSpawn(true);
+                painter();
+
             }
         });
 
     }
 
     private void buildUpComponents(){
-        int value;
 
         header = new JLabel("The easy 2048 game", SwingConstants.CENTER);
         header.setPreferredSize(new Dimension(450,50));
         header.setFont(new Font("th sarabunPSK", Font.PLAIN, 36));
-        numMap = new ArrayList<ArrayList<numBox>>(4);
+        numMap = new ArrayList<ArrayList<NumBox>>(4);
         
         for (int i = 0; i < 4; i++){
-            numMap.add(new ArrayList<numBox>());
+            numMap.add(new ArrayList<NumBox>());
             for (int j = 0; j < 4; j++){
-                numMap.get(i).add(new numBox(" ", SwingConstants.CENTER));
+                numMap.get(i).add(new NumBox(" ", SwingConstants.CENTER));
 
-                numBox numBox = numMap.get(i).get(j);
-                numBox.setPreferredSize(new Dimension(100, 100));
-                numBox.setFont(new Font("th sarabunPSK", Font.PLAIN, 40));
-                numBox.setBackground(bgColors(numBox.getValue()));
-                numBox.setOpaque(true);
+                NumBox NumBox = numMap.get(i).get(j);
+                NumBox.setPreferredSize(new Dimension(100, 100));
+                NumBox.setFont(new Font("th sarabunPSK", Font.PLAIN, 40));
+                NumBox.setOpaque(true);
             }
         }
 
@@ -108,11 +99,12 @@ public class App2048 implements App2048interface{
 
     }
 
+
     private void moveLeft() {
         for (int i = 0; i < 4; i++) {
             int k = 0;
             for (int j = 0; j < 4; j++) {
-                numBox box = numMap.get(i).get(j);
+                NumBox box = numMap.get(i).get(j);
                 if (box.getValue() != 0) {
                     if (k != j) {
                         numMap.get(i).get(k).setValue(box.getValue());
@@ -128,7 +120,7 @@ public class App2048 implements App2048interface{
         for (int i = 0; i < 4; i++) {
             int k = 3;
             for (int j = 3; j >= 0; j--) {
-                numBox box = numMap.get(i).get(j);
+                NumBox box = numMap.get(i).get(j);
                 if (box.getValue() != 0) {
                     if (k != j) {
                         numMap.get(i).get(k).setValue(box.getValue());
@@ -144,7 +136,7 @@ public class App2048 implements App2048interface{
         for (int j = 0; j < 4; j++) {
             int k = 3;
             for (int i = 3; i >= 0; i--) {
-                numBox box = numMap.get(i).get(j);
+                NumBox box = numMap.get(i).get(j);
                 if (box.getValue() != 0) {
                     if (k != i) {
                         numMap.get(k).get(j).setValue(box.getValue());
@@ -160,7 +152,7 @@ public class App2048 implements App2048interface{
         for (int j = 0; j < 4; j++) {
             int k = 0;
             for (int i = 0; i < 4; i++) {
-                numBox box = numMap.get(i).get(j);
+                NumBox box = numMap.get(i).get(j);
                 if (box.getValue() != 0) {
                     if (k != i) {
                         numMap.get(k).get(j).setValue(box.getValue());
@@ -174,10 +166,24 @@ public class App2048 implements App2048interface{
     
 
     private void numChangeOnPressed(String dir){
-        for (int i = 0; i < 4; i++){
-            for (int j = 0; j < 4; j++){
-                numBox numBox = numMap.get(i).get(j);
-                numBox nextBox = numMap.get(0).get(0);
+
+        int beginx = 0;
+        int beginy = 0;
+        int termimatex = 4;
+        int termimatey = 4;
+
+        switch (dir) {
+            case "north" : beginy = 1; break;
+            case "east" : termimatex = 3; break;
+            case "sounth" : termimatey = 3; break;
+            case "west" : beginx = 1; break;
+            default : System.out.println("Direction input error!(1)"); System.exit(1);
+        }
+        for (int i = beginx; i < termimatex; i++){
+            for (int j = beginy; j < termimatey; j++){
+
+                NumBox NumBox = numMap.get(i).get(j);
+                NumBox nextBox = numMap.get(0).get(0);
 
                 try{
                     switch (dir) {
@@ -185,28 +191,39 @@ public class App2048 implements App2048interface{
                         case "east" : nextBox = numMap.get(i).get(j + 1); break;
                         case "sounth" : nextBox = numMap.get(i + 1).get(j); break;
                         case "west" : nextBox = numMap.get(i).get(j - 1); break;
-                        default : System.out.println("Direction input error!"); System.exit(1);
+                        default : System.out.println("Direction input error!(2)"); System.exit(1);
                     }
-                    
-                    if(numBox.equals(nextBox)) {
+
+                    if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0) {
                         nextBox.increment();
-                        numBox.clearValue();
+                        NumBox.clearValue();
+                        i = beginx;
+                        j = beginy;
                     }
                 }
-                catch (ArrayIndexOutOfBoundsException e){
+                catch (IndexOutOfBoundsException e){
                     continue;
                 }
-                
-                
+
             }
         }
     }
 
-    private Color bgColors(int num){
+    private void painter(){
+
+        for (int i = 0; i < 4; i++){
+            for (int j = 0; j < 4; j++){
+                    NumBox nb = numMap.get(i).get(j);
+                    nb.setBackground(bgColorsSelection(nb.getValue()));
+                }
+            }
+        }
         
+    
+
+    private Color bgColorsSelection(int num) {
+
         Color ret = Color.WHITE;
-        System.out.println(num);
-        
         switch(num){
             case(2): {
                 ret = Color.LIGHT_GRAY;
@@ -254,6 +271,23 @@ public class App2048 implements App2048interface{
             }
         }
         return ret;
+    }
+
+    private void randomNumSpawn(boolean midgame){
+
+        int randomx = (int)(Math.random() * 4);
+        int randomy = (int)(Math.random() * 4);
+
+        while( numMap.get(randomx).get(randomy).getValue() != 0){
+            randomx = (int)(Math.random() * 4);
+            randomy = (int)(Math.random() * 4);
+        }
+
+        NumBox startBox = numMap.get(randomx).get(randomy);
+
+        if (midgame) startBox.setValue(Math.random() > 0.5 ? 2 : 4);
+        else startBox.setValue(2);
+
     }
 
 }
