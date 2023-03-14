@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 
 import java.lang.IndexOutOfBoundsException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayer;
 import javax.swing.JOptionPane;
@@ -29,6 +30,8 @@ public class App2048 implements App2048interface{
 
     private JLabel popupdesc1;
     private JLabel popupdesc2;
+    private JButton tryAgain;
+    private JButton closeGame;
     
     private int intScore;
     private boolean isMoved;
@@ -38,6 +41,7 @@ public class App2048 implements App2048interface{
         window = new JFrame("Easy 2048");
         window.setSize(500, 700);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
         window.setVisible(true);
         buildUpComponents();
         startgame();
@@ -205,11 +209,16 @@ public class App2048 implements App2048interface{
         int termimatex = 4;
         int termimatey = 4;
 
+        boolean mayOver = false;
+        boolean alreadySum = false;
+
         for (int i = beginx; i < termimatex; i++){
+            alreadySum = false;
             for (int j = beginy; j < termimatey; j++){
 
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox nextBox = numMap.get(0).get(0);
+                
                 if(NumBox.getValue() == 1024){
                     String show = "VICTORY\nScore :" + intScore;
                     JOptionPane.showMessageDialog(null, show );
@@ -228,13 +237,16 @@ public class App2048 implements App2048interface{
                         default : System.out.println("Direction input error!(2)"); System.exit(1);
                     }
 
-                    if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0) {
+                    if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0 && !alreadySum) {
                         nextBox.increment();
                         NumBox.clearValue();
                         intScore++;
                         lbScore.setText("Score : " + intScore);
+                        alreadySum = true;
                     }
-                    else isGameOver();
+                    else {
+                        mayOver = true;
+                    }
                 }
                 catch (ArrayIndexOutOfBoundsException e){
                     continue;
@@ -245,13 +257,15 @@ public class App2048 implements App2048interface{
 
             }
         }
+
+        if (mayOver) isGameOver();
     }
 
     private void painter(){
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
                 NumBox nb = numMap.get(i).get(j);
-                nb.setBackground(bgColorsSelection(nb.getValue()));
+                nb.setBackground(nb.bgColorsSelection(nb.getValue()));
                 if(nb.getValue() > 64){
                     nb.setForeground(Color.WHITE);
                 }
@@ -261,60 +275,6 @@ public class App2048 implements App2048interface{
                     
             }
         }
-    }
-        
-    
-
-    private Color bgColorsSelection(int num) {
-
-        Color ret = new Color(126,171,139);
-        switch(num){
-            case(2): {
-                ret = new Color(193,183,132);
-                break;
-            }
-            case(4): {
-                ret = new Color(190,175,95);
-                break;
-            }
-            case(8): {
-                ret = new Color(150,140,49);
-                break;
-            }
-            case(16): {
-                ret = new Color(110,100,55);
-                break;
-            }
-            case(32): {
-                ret = new Color(190,190,190);
-                break;
-            }
-            case(64): {
-                ret = new Color(115,115,90);
-                break;
-            }
-            case(128): {
-                ret = new Color(81, 81, 52);
-                break;
-            }
-            case(256): {
-                ret = new Color(45, 45, 30);
-                break;
-            }
-            case(512): {
-                ret = new Color(75,40,30);
-                break;
-            }
-            case(1024): {
-                ret = new Color(38,6,6);
-                break;
-            }
-            case(2048): {
-                ret = new Color(219, 234, 79);
-                break;
-            }
-        }
-        return ret;
     }
 
     private void randomNumSpawn(boolean midgame){
@@ -345,20 +305,15 @@ public class App2048 implements App2048interface{
     private void isGameOver(){
         boolean over = true;
 
-        for(int i =0; i< 4; i++){
-            for(int j = 0; j< 4; j++){
-                if (numMap.get(i).get(j).getValue() == 0) over = false;
-            }
-        }
+        // for(int i =0; i< 4; i++){
+        //     for(int j = 0; j< 4; j++){
+        //         if (numMap.get(i).get(j).getValue() == 0) over = false;
+        //     }
+        // }
 
         if(over) {
-            popup = new JFrame("Game over");
+            gameOver();
 
-            popupdesc1 = new JLabel("GAME OVER");
-            popupdesc1.setFont(new Font(fontName, Font.PLAIN, 30));
-            popupdesc2 = new JLabel("score : " + intScore);
-            //String show = "Game over\nScore :" + intScore;
-            clearAllValue();
         }
 
     }
@@ -371,6 +326,34 @@ public class App2048 implements App2048interface{
             System.out.print("\n");
         }
         System.out.print("\n");
+    }
+
+    public void clearIntScore(){
+        intScore = 0;
+    }
+
+    public void gameOver(){
+        popup = new JFrame("Game over");
+        popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        popup.setSize(new Dimension(400,300));
+        
+        popupdesc1 = new JLabel("GAME OVER", SwingConstants.CENTER);
+        popupdesc1.setFont(new Font("th sarabunPSK", Font.PLAIN, 30));
+        popupdesc1.setPreferredSize(new Dimension(300,50));
+
+        popupdesc2 = new JLabel("score : " + intScore, SwingConstants.CENTER);
+        popupdesc2.setPreferredSize(new Dimension(300,50));
+
+        tryAgain = new JButton()
+        //String show = "Game over\nScore :" + intScore;
+        
+        popup.setVisible(true);
+        popup.add(popupdesc1);
+        // popup.add(popupdesc2);
+        clearAllValue();
+        clearIntScore();
+        randomNumSpawn(false);
+        randomNumSpawn(false);
     }
 
 }
