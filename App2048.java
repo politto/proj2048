@@ -13,18 +13,28 @@ import java.lang.IndexOutOfBoundsException;
 import javax.swing.JFrame;
 import javax.swing.JLayer;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 
 public class App2048 implements App2048interface{
+
     private JFrame window;
+    private JFrame popup;
 
     private JLabel header;
     private ArrayList<ArrayList<NumBox>> numMap;
     private JLabel desc;
     private JLabel lbScore;
+
+    private JLabel popupdesc1;
+    private JLabel popupdesc2;
+    
     private int intScore;
+    private boolean isMoved;
+    private String fontName = "freesiaUPC";
     public App2048(){
+
         window = new JFrame("Easy 2048");
         window.setSize(500, 700);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,24 +56,32 @@ public class App2048 implements App2048interface{
 
                 switch(e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
+                        moveLeft();
                         numChangeOnPressed("west");
                         moveLeft();
                         break;
                     case KeyEvent.VK_RIGHT:
+                        moveRight();
                         numChangeOnPressed("east");
                         moveRight();
                         break;
                     case KeyEvent.VK_UP:
+                        moveUp();
                         numChangeOnPressed("north");
                         moveUp();
                         break;
                     case KeyEvent.VK_DOWN:
+                        moveDown();
                         numChangeOnPressed("sounth");
                         moveDown();
                         break;
                 }
 
-                randomNumSpawn(true);
+                if (isMoved) {
+                    randomNumSpawn(true);
+                    isMoved = !isMoved;
+                }
+
                 painter();
                 cligame();
 
@@ -76,32 +94,26 @@ public class App2048 implements App2048interface{
 
         header = new JLabel("The Easy 2048 Game", SwingConstants.CENTER);
         header.setPreferredSize(new Dimension(450,50));
-        header.setFont(new Font("th sarabunPSK", Font.PLAIN, 36));
+        header.setFont(new Font("freesiaUPC", Font.PLAIN, 45));
         numMap = new ArrayList<ArrayList<NumBox>>(4); 
         lbScore = new JLabel("Score : ",SwingConstants.CENTER);
+
         for (int i = 0; i < 4; i++){
             numMap.add(new ArrayList<NumBox>());
             for (int j = 0; j < 4; j++){
                 numMap.get(i).add(new NumBox(" ", SwingConstants.CENTER));
-
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox.setPreferredSize(new Dimension(100, 100));
-                NumBox.setFont(new Font("th sarabunPSK", Font.PLAIN, 40));
-                //NumBox nb =  numMap.get(i).get(j);
-                // if(nb.getValue() > 64){
-                //     nb.setForeground(Color.WHITE);
-                //     }
-                // else{
-                //     nb.setForeground(Color.BLACK);
-                // }
+                NumBox.setFont(new Font(fontName, Font.PLAIN, 40));
                 NumBox.setOpaque(true);
             }
         }
+
         desc = new JLabel("Use your Keyboard arrow keys to play this game[^v<>]", SwingConstants.CENTER);
         desc.setPreferredSize(new Dimension(450, 100));
-        desc.setFont(new Font("th sarabunPSK", Font.PLAIN, 20));
+        desc.setFont(new Font(fontName, Font.PLAIN, 30));
         lbScore.setPreferredSize(new Dimension(450, 100));
-        lbScore.setFont(new Font("th sarabunPSK", Font.PLAIN, 20));
+        lbScore.setFont(new Font(fontName, Font.PLAIN, 30));
         window.setLayout(new FlowLayout());
         
         window.add(header);
@@ -111,7 +123,6 @@ public class App2048 implements App2048interface{
                 window.add(numMap.get(i).get(j));
             }
         }
-        
         window.add(desc);
         
 
@@ -127,6 +138,7 @@ public class App2048 implements App2048interface{
                     if (k != j) {
                         numMap.get(i).get(k).setValue(box.getValue());
                         box.clearValue();
+                        isMoved = true;
                     }
                     k++;
                 }
@@ -143,6 +155,7 @@ public class App2048 implements App2048interface{
                     if (k != j) {
                         numMap.get(i).get(k).setValue(box.getValue());
                         box.clearValue();
+                        isMoved = true;
                     }
                     k--;
                 }
@@ -159,6 +172,7 @@ public class App2048 implements App2048interface{
                     if (k != i) {
                         numMap.get(k).get(j).setValue(box.getValue());
                         box.clearValue();
+                        isMoved = true;
                     }
                     k--;
                 }
@@ -175,6 +189,7 @@ public class App2048 implements App2048interface{
                     if (k != i) {
                         numMap.get(k).get(j).setValue(box.getValue());
                         box.clearValue();
+                        isMoved = true;
                     }
                     k++;
                 }
@@ -190,21 +205,17 @@ public class App2048 implements App2048interface{
         int termimatex = 4;
         int termimatey = 4;
 
-        // switch (dir) {
-        //     case "north" : beginy = 1; break;
-        //     case "east" : termimatex = 3; break;
-        //     case "sounth" : termimatey = 3; break;
-        //     case "west" : beginx = 1; break;
-        //     default : System.out.println("Direction input error!(1)"); System.exit(1);
-        // }
         for (int i = beginx; i < termimatex; i++){
             for (int j = beginy; j < termimatey; j++){
 
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox nextBox = numMap.get(0).get(0);
-                if(NumBox.getValue() == 2048){
-                    String show = "VICTRORY\nScore :" + intScore;
+                if(NumBox.getValue() == 1024){
+                    String show = "VICTORY\nScore :" + intScore;
                     JOptionPane.showMessageDialog(null, show );
+                    clearAllValue();
+                    randomNumSpawn(false);
+                    randomNumSpawn(false);
 
                 }
 
@@ -220,11 +231,10 @@ public class App2048 implements App2048interface{
                     if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0) {
                         nextBox.increment();
                         NumBox.clearValue();
-                        i = beginx;
-                        j = beginy;
                         intScore++;
                         lbScore.setText("Score : " + intScore);
                     }
+                    else isGameOver();
                 }
                 catch (ArrayIndexOutOfBoundsException e){
                     continue;
@@ -238,21 +248,20 @@ public class App2048 implements App2048interface{
     }
 
     private void painter(){
-
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
-                    NumBox nb = numMap.get(i).get(j);
-                    nb.setBackground(bgColorsSelection(nb.getValue()));
-                    if(nb.getValue() > 64){
-                        nb.setForeground(Color.WHITE);
-                        }
-                    else{
-                        nb.setForeground(Color.BLACK);
-                    }
-                    
+                NumBox nb = numMap.get(i).get(j);
+                nb.setBackground(bgColorsSelection(nb.getValue()));
+                if(nb.getValue() > 64){
+                    nb.setForeground(Color.WHITE);
                 }
+                else{
+                    nb.setForeground(Color.BLACK);
+                }
+                    
             }
         }
+    }
         
     
 
@@ -322,6 +331,35 @@ public class App2048 implements App2048interface{
 
         if (midgame) startBox.setValue(Math.random() > 0.5 ? 2 : 4);
         else startBox.setValue(2);
+
+    }
+
+    private void clearAllValue(){
+        for(int i =0; i< 4; i++){
+            for(int j = 0; j< 4; j++){
+                numMap.get(i).get(j).clearValue();
+            }
+        }
+    }
+
+    private void isGameOver(){
+        boolean over = true;
+
+        for(int i =0; i< 4; i++){
+            for(int j = 0; j< 4; j++){
+                if (numMap.get(i).get(j).getValue() == 0) over = false;
+            }
+        }
+
+        if(over) {
+            popup = new JFrame("Game over");
+
+            popupdesc1 = new JLabel("GAME OVER");
+            popupdesc1.setFont(new Font(fontName, Font.PLAIN, 30));
+            popupdesc2 = new JLabel("score : " + intScore);
+            //String show = "Game over\nScore :" + intScore;
+            clearAllValue();
+        }
 
     }
 
