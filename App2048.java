@@ -221,14 +221,7 @@ public class App2048 implements App2048interface{
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox nextBox = numMap.get(0).get(0);
                 
-                if(NumBox.getValue() == 1024){
-                    String show = "VICTORY\nScore :" + intScore;
-                    JOptionPane.showMessageDialog(null, show );
-                    clearAllValue();
-                    randomNumSpawn(false);
-                    randomNumSpawn(false);
-
-                }
+                if(NumBox.getValue() == 128) gameOver("win");
 
                 try{
                     switch (dir) {
@@ -241,7 +234,7 @@ public class App2048 implements App2048interface{
 
                     if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0 && !alreadySum) {
                         if (alreadySum) {
-                            alreadySum = !alreadySum;
+                            //alreadySum = !alreadySum;
                             int[] ij = skipCheck(i,j,dir);
                             i = ij[0];
                             j = ij[1];
@@ -272,16 +265,13 @@ public class App2048 implements App2048interface{
     //method for skip already 
     private int[] skipCheck(int i, int j, String dir){
         switch (dir) {
-            case "north" : i -= 2; break;
-            case "east" : j += 2; break;
-            case "sounth" : i += 2;  break;
-            case "west" : j -= 2; break;
+            case "north" : i = 0; break;
+            case "east" : j = 3; break;
+            case "sounth" : i = 3;  break;
+            case "west" : j = 0; break;
             default : System.out.println("Direction input error!(2)"); System.exit(1);
         }
-        if (i > 3) i = 3;
-        if (j > 3) j = 3;
-        if (i < 0) i = 0;
-        if (j < 0) j = 0;
+
         int[] ret = {i, j};
         return ret;
     }
@@ -336,8 +326,8 @@ public class App2048 implements App2048interface{
             }
         }
 
-        if(over) {
-            gameOver();
+        if(over && intScore > 0) {
+            gameOver("lose");
 
         }
 
@@ -357,13 +347,15 @@ public class App2048 implements App2048interface{
         intScore = 0;
     }
 
-    public void gameOver(){
+    public void gameOver(String winOrLose){
 
-        popup = new JFrame("Game over");
+        if (winOrLose.equals("win")) popup = new JFrame("You win");
+        else popup = new JFrame("Game over");
         popup.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         popup.setSize(new Dimension(400,300));
         
-        popupdesc1 = new JLabel("GAME OVER", SwingConstants.CENTER);
+        if (winOrLose.equals("win")) popupdesc1 = new JLabel("You win!", SwingConstants.CENTER);
+        else popupdesc1 = new JLabel("GAME OVER", SwingConstants.CENTER);
         popupdesc2 = new JLabel("score : " + intScore, SwingConstants.CENTER);
         tryAgain = new JButton("Try again");
         closeGame = new JButton("Quit");
@@ -388,9 +380,6 @@ public class App2048 implements App2048interface{
     }
 
     public void gameOverCont(){
-
-        clearAllValue();
-        clearIntScore();
         
         ButtonClickListener bcl = new ButtonClickListener();
         tryAgain.addActionListener(bcl);
@@ -403,11 +392,14 @@ public class App2048 implements App2048interface{
         public void actionPerformed(ActionEvent ev){
     
             JButton source = (JButton)ev.getSource();
-    
-            if(source == tryAgain){
-                startgame();
+            System.out.println(source);
+            if(source == closeGame || source.getText().equals("Quit")) System.exit(1);
+            else {
+            clearAllValue();
+            clearIntScore();
+            startgame();
+            popup.setVisible(false);
             }
-            else System.exit(1);
         }
     
     }

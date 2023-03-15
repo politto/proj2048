@@ -42,6 +42,10 @@ public class NumBox extends JLabel{
 
         Color ret = new Color(126,171,139);
         switch(num){
+            case(0): {
+                ret = new Color(126,171,139);
+                break;
+            }
             case(2): {
                 ret = new Color(193,183,132);
                 break;
