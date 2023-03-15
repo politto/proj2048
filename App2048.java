@@ -7,9 +7,12 @@ import java.awt.Dimension;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import java.lang.IndexOutOfBoundsException;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayer;
@@ -48,7 +51,7 @@ public class App2048 implements App2048interface{
         
     }
 
-    private void startgame(){
+    void startgame(){
 
         randomNumSpawn(false);
         randomNumSpawn(false);
@@ -213,7 +216,6 @@ public class App2048 implements App2048interface{
         boolean alreadySum = false;
 
         for (int i = beginx; i < termimatex; i++){
-            alreadySum = false;
             for (int j = beginy; j < termimatey; j++){
 
                 NumBox NumBox = numMap.get(i).get(j);
@@ -238,11 +240,17 @@ public class App2048 implements App2048interface{
                     }
 
                     if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0 && !alreadySum) {
+                        if (alreadySum) {
+                            alreadySum = !alreadySum;
+                            int[] ij = skipCheck(i,j,dir);
+                            i = ij[0];
+                            j = ij[1];
+                        }
                         nextBox.increment();
                         NumBox.clearValue();
                         intScore++;
                         lbScore.setText("Score : " + intScore);
-                        alreadySum = true;
+                        
                     }
                     else {
                         mayOver = true;
@@ -259,6 +267,23 @@ public class App2048 implements App2048interface{
         }
 
         if (mayOver) isGameOver();
+    }
+
+    //method for skip already 
+    private int[] skipCheck(int i, int j, String dir){
+        switch (dir) {
+            case "north" : i -= 2; break;
+            case "east" : j += 2; break;
+            case "sounth" : i += 2;  break;
+            case "west" : j -= 2; break;
+            default : System.out.println("Direction input error!(2)"); System.exit(1);
+        }
+        if (i > 3) i = 3;
+        if (j > 3) j = 3;
+        if (i < 0) i = 0;
+        if (j < 0) j = 0;
+        int[] ret = {i, j};
+        return ret;
     }
 
     private void painter(){
@@ -305,11 +330,11 @@ public class App2048 implements App2048interface{
     private void isGameOver(){
         boolean over = true;
 
-        // for(int i =0; i< 4; i++){
-        //     for(int j = 0; j< 4; j++){
-        //         if (numMap.get(i).get(j).getValue() == 0) over = false;
-        //     }
-        // }
+        for(int i =0; i< 4; i++){
+            for(int j = 0; j< 4; j++){
+                if (numMap.get(i).get(j).getValue() == 0) over = false;
+            }
+        }
 
         if(over) {
             gameOver();
@@ -333,27 +358,59 @@ public class App2048 implements App2048interface{
     }
 
     public void gameOver(){
+
         popup = new JFrame("Game over");
-        popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        popup.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         popup.setSize(new Dimension(400,300));
         
         popupdesc1 = new JLabel("GAME OVER", SwingConstants.CENTER);
-        popupdesc1.setFont(new Font("th sarabunPSK", Font.PLAIN, 30));
-        popupdesc1.setPreferredSize(new Dimension(300,50));
-
         popupdesc2 = new JLabel("score : " + intScore, SwingConstants.CENTER);
-        popupdesc2.setPreferredSize(new Dimension(300,50));
+        tryAgain = new JButton("Try again");
+        closeGame = new JButton("Quit");
 
-        tryAgain = new JButton()
-        //String show = "Game over\nScore :" + intScore;
+        popupdesc1.setPreferredSize(new Dimension(400,50));
+        popupdesc1.setFont(new Font("th sarabunPSK bold", Font.PLAIN, 40));
+
+        popupdesc2.setPreferredSize(new Dimension(400,50));
+        popupdesc1.setFont(new Font("th sarabunPSK bold", Font.PLAIN, 20));
+
+        tryAgain.setPreferredSize(new Dimension(200,50));        
+        closeGame.setPreferredSize(new Dimension(200,50));        
         
-        popup.setVisible(true);
+        popup.setLayout(new FlowLayout());
         popup.add(popupdesc1);
-        // popup.add(popupdesc2);
+        popup.add(popupdesc2);
+        popup.add(tryAgain);
+        popup.add(closeGame);
+        popup.setVisible(true);
+        
+        gameOverCont();
+    }
+
+    public void gameOverCont(){
+
         clearAllValue();
         clearIntScore();
-        randomNumSpawn(false);
-        randomNumSpawn(false);
+        
+        ButtonClickListener bcl = new ButtonClickListener();
+        tryAgain.addActionListener(bcl);
+        closeGame.addActionListener(bcl);
+
     }
+
+    class ButtonClickListener implements ActionListener{
+    
+        public void actionPerformed(ActionEvent ev){
+    
+            JButton source = (JButton)ev.getSource();
+    
+            if(source == tryAgain){
+                startgame();
+            }
+            else System.exit(1);
+        }
+    
+    }
+    
 
 }
