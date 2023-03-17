@@ -320,15 +320,18 @@ public class App2048 implements App2048interface{
     private void isGameOver(){
         boolean over = true;
 
-        for(int i =0; i< 4; i++){
-            for(int j = 0; j< 4; j++){
-                if (numMap.get(i).get(j).getValue() == 0) over = false;
-            }
-        }
+        // for(int i =0; i< 4; i++){
+        //     for(int j = 0; j< 4; j++){
+        //         if (numMap.get(i).get(j).getValue() == 0){
+        //         over = false;
+        //         break;
+        //         }
+        //     }
+        // }
 
-        if(over && intScore > 0) {
+        if(over && intScore > 2) {
+            System.out.println(intScore);
             gameOver("lose");
-
         }
 
     }
@@ -345,13 +348,14 @@ public class App2048 implements App2048interface{
 
     public void clearIntScore(){
         intScore = 0;
+        System.out.println(intScore);
     }
 
     public void gameOver(String winOrLose){
 
         if (winOrLose.equals("win")) popup = new JFrame("You win");
         else popup = new JFrame("Game over");
-        popup.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         popup.setSize(new Dimension(400,300));
         
         if (winOrLose.equals("win")) popupdesc1 = new JLabel("You win!", SwingConstants.CENTER);
@@ -393,12 +397,13 @@ public class App2048 implements App2048interface{
     
             JButton source = (JButton)ev.getSource();
             System.out.println(source);
-            if(source == closeGame || source.getText().equals("Quit")) System.exit(1);
-            else {
             clearAllValue();
             clearIntScore();
-            startgame();
-            popup.setVisible(false);
+            if(source == closeGame || source.getText().equals("Quit")) System.exit(1);
+            else {
+                popup.setVisible(false);
+                window.setVisible(false);
+                new App2048();
             }
         }
     
