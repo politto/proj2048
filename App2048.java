@@ -51,6 +51,7 @@ public class App2048 implements App2048interface{
         
     }
 
+    //startGame method
     void startgame(){
 
         randomNumSpawn(false);
@@ -221,7 +222,7 @@ public class App2048 implements App2048interface{
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox nextBox = numMap.get(0).get(0);
                 
-                if(NumBox.getValue() == 128) gameOver("win");
+                if(NumBox.getValue() == 1024) gameOver("win");
 
                 try{
                     switch (dir) {
@@ -262,7 +263,7 @@ public class App2048 implements App2048interface{
         if (mayOver) isGameOver();
     }
 
-    //method for skip already 
+    //method for skip already summed row(user input ^v) or summed col(user input <>)
     private int[] skipCheck(int i, int j, String dir){
         switch (dir) {
             case "north" : i = 0; break;
@@ -317,17 +318,26 @@ public class App2048 implements App2048interface{
         }
     }
 
+    //check if game is over.
     private void isGameOver(){
         boolean over = true;
 
-        // for(int i =0; i< 4; i++){
-        //     for(int j = 0; j< 4; j++){
-        //         if (numMap.get(i).get(j).getValue() == 0){
-        //         over = false;
-        //         break;
-        //         }
-        //     }
-        // }
+        for(int i =0; i< 4; i++){
+            for(int j = 0; j< 4; j++){
+                try{
+                    int thisVal = numMap.get(i).get(j).getValue();
+                    if (thisVal == 0 || thisVal == numMap.get(i).get(j + 1).getValue() || thisVal == numMap.get(i).get(j - 1).getValue() || thisVal == numMap.get(i + 1).get(j).getValue() || thisVal == numMap.get(i - 1).get(j).getValue()){
+                        over = false;
+                        break;
+                    }
+                }
+                    
+                catch(IndexOutOfBoundsException e){
+                    continue;
+                }
+
+            }
+        }
 
         if(over && intScore > 2) {
             System.out.println(intScore);
@@ -336,6 +346,7 @@ public class App2048 implements App2048interface{
 
     }
 
+    //for debugging.
     private void cligame(){
         for(int i =0; i< 4; i++){
             for(int j = 0; j< 4; j++){
@@ -351,6 +362,7 @@ public class App2048 implements App2048interface{
         System.out.println(intScore);
     }
 
+    //If game over, do this method.
     public void gameOver(String winOrLose){
 
         if (winOrLose.equals("win")) popup = new JFrame("You win");
