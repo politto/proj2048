@@ -214,8 +214,7 @@ public class App2048 implements App2048interface{
         int termimatey = 4;
         int alreadySumValue = 0;
         boolean mayOver = false;
-
-
+        
         for (int i = beginx; i < termimatex; i++){
             alreadySumValue = 0;
             for (int j = beginy; j < termimatey; j++){
@@ -248,11 +247,7 @@ public class App2048 implements App2048interface{
                     NumBox.clearValue();
                     intScore++;
                     lbScore.setText("Score : " + intScore);
-                    
-                    
-                    int[] ij = skipCheck(i,j,dir);
-                    i = ij[0];
-                    j = ij[1];
+                    isMoved = true;
                     alreadySumValue = 0;
                 }
                 else {
@@ -264,21 +259,6 @@ public class App2048 implements App2048interface{
 
         if (mayOver) isGameOver();
     }
-
-        //method for skip already summed row(user input ^v) or summed col(user input <>)
-        private int[] skipCheck(int i, int j, String dir){
-            switch (dir) {
-                case "north" : i -=1; break;
-                case "east" : j += 1; break;
-                case "sounth" : i += 1;  break;
-                case "west" : j -= 1; break;
-                default : System.out.println("Direction input error!(2)"); System.exit(1);
-            }
-            System.out.println("skipCheck!");
-    
-            int[] ret = {i, j};
-            return ret;
-        }
 
     private void painter(){
         for (int i = 0; i < 4; i++){
