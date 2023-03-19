@@ -64,7 +64,7 @@ public class App2048 implements App2048interface{
 
                 switch(e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
-                        moveLeft();
+                        //moveLeft();
                         numChangeOnPressed("west");
                         moveLeft();
                         break;
@@ -214,7 +214,7 @@ public class App2048 implements App2048interface{
         int termimatey = 4;
 
         boolean mayOver = false;
-        boolean alreadySum = false;
+
 
         for (int i = beginx; i < termimatex; i++){
             for (int j = beginy; j < termimatey; j++){
@@ -232,23 +232,6 @@ public class App2048 implements App2048interface{
                         case "west" : nextBox = numMap.get(i).get(j - 1); break;
                         default : System.out.println("Direction input error!(2)"); System.exit(1);
                     }
-
-                    if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0 && !alreadySum) {
-                        if (alreadySum) {
-                            //alreadySum = !alreadySum;
-                            int[] ij = skipCheck(i,j,dir);
-                            i = ij[0];
-                            j = ij[1];
-                        }
-                        nextBox.increment();
-                        NumBox.clearValue();
-                        intScore++;
-                        lbScore.setText("Score : " + intScore);
-                        
-                    }
-                    else {
-                        mayOver = true;
-                    }
                 }
                 catch (ArrayIndexOutOfBoundsException e){
                     continue;
@@ -257,25 +240,43 @@ public class App2048 implements App2048interface{
                     continue;
                 }
 
+                if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0) {
+
+                    //alreadySum = !alreadySum;
+                    int[] ij = skipCheck(i,j,dir);
+                    i = ij[0];
+                    j = ij[1];
+                    
+                    nextBox.increment();
+                    NumBox.clearValue();
+                    intScore++;
+                    lbScore.setText("Score : " + intScore);
+                    
+                }
+                else {
+                    mayOver = true;
+                }
+
             }
         }
 
         if (mayOver) isGameOver();
     }
 
-    //method for skip already summed row(user input ^v) or summed col(user input <>)
-    private int[] skipCheck(int i, int j, String dir){
-        switch (dir) {
-            case "north" : i = 0; break;
-            case "east" : j = 3; break;
-            case "sounth" : i = 3;  break;
-            case "west" : j = 0; break;
-            default : System.out.println("Direction input error!(2)"); System.exit(1);
+        //method for skip already summed row(user input ^v) or summed col(user input <>)
+        private int[] skipCheck(int i, int j, String dir){
+            switch (dir) {
+                case "north" : i -=1; break;
+                case "east" : j += 1; break;
+                case "sounth" : i += 1;  break;
+                case "west" : j -= 1; break;
+                default : System.out.println("Direction input error!(2)"); System.exit(1);
+            }
+            System.out.println("skipCheck!");
+    
+            int[] ret = {i, j};
+            return ret;
         }
-
-        int[] ret = {i, j};
-        return ret;
-    }
 
     private void painter(){
         for (int i = 0; i < 4; i++){
