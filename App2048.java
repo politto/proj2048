@@ -64,7 +64,7 @@ public class App2048 implements App2048interface{
 
                 switch(e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
-                        //moveLeft();
+                        moveLeft();
                         numChangeOnPressed("west");
                         moveLeft();
                         break;
@@ -212,11 +212,12 @@ public class App2048 implements App2048interface{
         int beginy = 0;
         int termimatex = 4;
         int termimatey = 4;
-
+        int alreadySumValue = 0;
         boolean mayOver = false;
 
 
         for (int i = beginx; i < termimatex; i++){
+            alreadySumValue = 0;
             for (int j = beginy; j < termimatey; j++){
 
                 NumBox NumBox = numMap.get(i).get(j);
@@ -240,18 +241,19 @@ public class App2048 implements App2048interface{
                     continue;
                 }
 
-                if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0) {
-
-                    //alreadySum = !alreadySum;
-                    int[] ij = skipCheck(i,j,dir);
-                    i = ij[0];
-                    j = ij[1];
-                    
+                if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0 && NumBox.getValue() != alreadySumValue) {
+                        
+                    alreadySumValue = NumBox.getValue();
                     nextBox.increment();
                     NumBox.clearValue();
                     intScore++;
                     lbScore.setText("Score : " + intScore);
                     
+                    
+                    int[] ij = skipCheck(i,j,dir);
+                    i = ij[0];
+                    j = ij[1];
+                    alreadySumValue = 0;
                 }
                 else {
                     mayOver = true;
@@ -308,7 +310,6 @@ public class App2048 implements App2048interface{
 
         if (midgame) startBox.setValue(Math.random() > 0.5 ? 2 : 4);
         else startBox.setValue(2);
-
     }
 
     private void clearAllValue(){
