@@ -15,14 +15,15 @@ public class CoreSystem implements App2048interface{
 
     public CoreSystem(){
         
-        Apperence.uiBuildUp();
         numMap = new ArrayList<ArrayList<NumBox>>(4); 
+        Apperence.uiBuildUp();
         startgame();
         
     }
 
     //startGame method
     void startgame(){
+        
 
         randomNumSpawn(false);
         randomNumSpawn(false);
@@ -265,6 +266,7 @@ public class CoreSystem implements App2048interface{
     }
 
     static ArrayList<ArrayList<NumBox>> getNumMap(){
+        // System.out.println(numMap);
         return numMap;
     }
     

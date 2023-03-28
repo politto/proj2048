@@ -30,7 +30,10 @@ public class Apperence {
 
     static void uiBuildUp(){
 
-        
+        window = new JFrame("Easy 2048");
+        window.setSize(500, 750);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setVisible(true);
 
         header = new JLabel("The Easy 2048 Game", SwingConstants.CENTER);
         header.setPreferredSize(new Dimension(450,50));
@@ -158,7 +161,7 @@ class ButtonClickListener implements ActionListener{
     public void actionPerformed(ActionEvent ev){
 
         JButton source = (JButton)ev.getSource();
-        System.out.println(source);
+        //System.out.println(source);
         CoreSystem.clearAllValue();
         CoreSystem.clearIntScore();
         if(source == Apperence.getCloseGameButton() || source.getText().equals("Quit")) System.exit(1);
