@@ -1,10 +1,5 @@
 import java.util.ArrayList;
 
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.Dimension;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
@@ -12,41 +7,21 @@ import java.awt.event.ActionEvent;
 
 import java.lang.IndexOutOfBoundsException;
 
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLayer;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.JLabel;
+public class CoreSystem implements App2048interface{
 
-public class App2048 implements App2048interface{
-
-    private JFrame window;
-    private JFrame popup;
-
-    private JLabel header;
     private ArrayList<ArrayList<NumBox>> numMap;
-    private JLabel desc;
-    private JLabel lbScore;
-
-    private JLabel popupdesc1;
-    private JLabel popupdesc2;
-    private JButton tryAgain;
-    private JButton closeGame;
     
     private int intScore;
     private boolean isMoved;
     private String fontName = "freesiaUPC";
-    public App2048(){
 
-        window = new JFrame("Easy 2048");
-        window.setSize(500, 700);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
-        window.setVisible(true);
-        buildUpComponents();
+
+    
+    
+    public CoreSystem(){
+
+        Apperence.uiBuildUp();
+        numMap = new ArrayList<ArrayList<NumBox>>(4); 
         startgame();
         
     }
@@ -57,9 +32,9 @@ public class App2048 implements App2048interface{
         randomNumSpawn(false);
         randomNumSpawn(false);
         
-        painter();
+        Apperence.painter();
 
-        window.addKeyListener(new KeyAdapter() {
+        Apperence.getWindow().addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
 
                 switch(e.getKeyCode()) {
@@ -90,52 +65,13 @@ public class App2048 implements App2048interface{
                     isMoved = !isMoved;
                 }
 
-                painter();
+                Apperence.painter();
                 cligame();
 
             }
         });
 
     }
-
-    private void buildUpComponents(){
-
-        header = new JLabel("The Easy 2048 Game", SwingConstants.CENTER);
-        header.setPreferredSize(new Dimension(450,50));
-        header.setFont(new Font("freesiaUPC", Font.PLAIN, 45));
-        numMap = new ArrayList<ArrayList<NumBox>>(4); 
-        lbScore = new JLabel("Score : ",SwingConstants.CENTER);
-
-        for (int i = 0; i < 4; i++){
-            numMap.add(new ArrayList<NumBox>());
-            for (int j = 0; j < 4; j++){
-                numMap.get(i).add(new NumBox(" ", SwingConstants.CENTER));
-                NumBox NumBox = numMap.get(i).get(j);
-                NumBox.setPreferredSize(new Dimension(100, 100));
-                NumBox.setFont(new Font(fontName, Font.PLAIN, 40));
-                NumBox.setOpaque(true);
-            }
-        }
-
-        desc = new JLabel("Use your Keyboard arrow keys to play this game[^v<>]", SwingConstants.CENTER);
-        desc.setPreferredSize(new Dimension(450, 100));
-        desc.setFont(new Font(fontName, Font.PLAIN, 30));
-        lbScore.setPreferredSize(new Dimension(450, 100));
-        lbScore.setFont(new Font(fontName, Font.PLAIN, 30));
-        window.setLayout(new FlowLayout());
-        
-        window.add(header);
-        window.add(lbScore);
-        for (int i = 0; i < 4; i++){
-            for (int j = 0; j < 4; j++){
-                window.add(numMap.get(i).get(j));
-            }
-        }
-        window.add(desc);
-        
-
-    }
-
 
     private void moveLeft() {
         for (int i = 0; i < 4; i++) {
@@ -222,7 +158,7 @@ public class App2048 implements App2048interface{
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox nextBox = numMap.get(0).get(0);
                 
-                if(NumBox.getValue() == 1024) gameOver("win");
+                if(NumBox.getValue() == 64) Apperence.gameOver("win");
 
                 try{
                     switch (dir) {
@@ -246,7 +182,7 @@ public class App2048 implements App2048interface{
                     nextBox.increment();
                     NumBox.clearValue();
                     intScore++;
-                    lbScore.setText("Score : " + intScore);
+                    Apperence.setScore(intScore);
                     isMoved = true;
                     alreadySumValue = 0;
                 }
@@ -260,21 +196,6 @@ public class App2048 implements App2048interface{
         if (mayOver) isGameOver();
     }
 
-    private void painter(){
-        for (int i = 0; i < 4; i++){
-            for (int j = 0; j < 4; j++){
-                NumBox nb = numMap.get(i).get(j);
-                nb.setBackground(nb.bgColorsSelection(nb.getValue()));
-                if(nb.getValue() > 64){
-                    nb.setForeground(Color.WHITE);
-                }
-                else{
-                    nb.setForeground(Color.BLACK);
-                }
-                    
-            }
-        }
-    }
 
     private void randomNumSpawn(boolean midgame){
 
@@ -323,7 +244,7 @@ public class App2048 implements App2048interface{
 
         if(over && intScore > 2) {
             System.out.println(intScore);
-            gameOver("lose");
+            Apperence.gameOver("lose");
         }
 
     }
@@ -344,63 +265,8 @@ public class App2048 implements App2048interface{
         System.out.println(intScore);
     }
 
-    //If game over, do this method.
-    public void gameOver(String winOrLose){
-
-        if (winOrLose.equals("win")) popup = new JFrame("You win");
-        else popup = new JFrame("Game over");
-        popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        popup.setSize(new Dimension(400,300));
-        
-        if (winOrLose.equals("win")) popupdesc1 = new JLabel("You win!", SwingConstants.CENTER);
-        else popupdesc1 = new JLabel("GAME OVER", SwingConstants.CENTER);
-        popupdesc2 = new JLabel("score : " + intScore, SwingConstants.CENTER);
-        tryAgain = new JButton("Try again");
-        closeGame = new JButton("Quit");
-
-        popupdesc1.setPreferredSize(new Dimension(400,50));
-        popupdesc1.setFont(new Font("th sarabunPSK bold", Font.PLAIN, 40));
-
-        popupdesc2.setPreferredSize(new Dimension(400,50));
-        popupdesc1.setFont(new Font("th sarabunPSK bold", Font.PLAIN, 20));
-
-        tryAgain.setPreferredSize(new Dimension(200,50));        
-        closeGame.setPreferredSize(new Dimension(200,50));        
-        
-        popup.setLayout(new FlowLayout());
-        popup.add(popupdesc1);
-        popup.add(popupdesc2);
-        popup.add(tryAgain);
-        popup.add(closeGame);
-        popup.setVisible(true);
-        
-        gameOverCont();
-    }
-
-    public void gameOverCont(){
-        
-        ButtonClickListener bcl = new ButtonClickListener();
-        tryAgain.addActionListener(bcl);
-        closeGame.addActionListener(bcl);
-
-    }
-
-    class ButtonClickListener implements ActionListener{
-    
-        public void actionPerformed(ActionEvent ev){
-    
-            JButton source = (JButton)ev.getSource();
-            System.out.println(source);
-            clearAllValue();
-            clearIntScore();
-            if(source == closeGame || source.getText().equals("Quit")) System.exit(1);
-            else {
-                popup.setVisible(false);
-                window.setVisible(false);
-                new App2048();
-            }
-        }
-    
+    static ArrayList<ArrayList<NumBox>> getNumMap(){
+        return numMap;
     }
     
 

@@ -1,10 +1,11 @@
 
 public class Main {
     public static void main(String[] args) {
-        App2048 a = new App2048();
+        CoreSystem a = new CoreSystem();
+        Apperence b = new Apperence();
         useit(a);
     }
-    static void useit(App2048 a){
+    static void useit(CoreSystem a){
         
     }
 }

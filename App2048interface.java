@@ -1,8 +1,8 @@
 public interface App2048interface {
 
-    private static void startgame(){}
-    private static void numChangeOnPressed(){}
-    private static void displayNum(){}
+    public static void startgame(){}
+    public static void numChangeOnPressed(){}
+    public static void displayNum(){}
 
 
 
