@@ -208,7 +208,7 @@ public class CoreSystem implements App2048interface{
         else startBox.setValue(2);
     }
 
-    private void clearAllValue(){
+    static void clearAllValue(){
         for(int i =0; i< 4; i++){
             for(int j = 0; j< 4; j++){
                 numMap.get(i).get(j).clearValue();
@@ -255,7 +255,7 @@ public class CoreSystem implements App2048interface{
         System.out.print("\n");
     }
 
-    public void clearIntScore(){
+    static void clearIntScore(){
         intScore = 0;
         System.out.println(intScore);
     }

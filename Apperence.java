@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 
 import java.util.ArrayList;
 
-public static class Apperence {
+public class Apperence {
 
     private static JFrame window;
     private static JFrame popup;
@@ -138,21 +138,35 @@ public static class Apperence {
 
     }
 
-    class ButtonClickListener implements ActionListener{
-    
-        public void actionPerformed(ActionEvent ev){
-    
-            JButton source = (JButton)ev.getSource();
-            System.out.println(source);
-            clearAllValue();
-            clearIntScore();
-            if(source == closeGame || source.getText().equals("Quit")) System.exit(1);
-            else {
-                popup.setVisible(false);
-                window.setVisible(false);
-                new CoreSystem();
-            }
-        }
-    
+    static JFrame getPopup(){
+        return popup;
     }
+
+    static JButton getTryagainButton(){
+        return tryAgain;
+    }
+
+    static JButton getCloseGameButton(){
+        return closeGame;
+    }
+
+
+}
+
+class ButtonClickListener implements ActionListener{
+    
+    public void actionPerformed(ActionEvent ev){
+
+        JButton source = (JButton)ev.getSource();
+        System.out.println(source);
+        CoreSystem.clearAllValue();
+        CoreSystem.clearIntScore();
+        if(source == Apperence.getCloseGameButton() || source.getText().equals("Quit")) System.exit(1);
+        else {
+            Apperence.getPopup().setVisible(false);
+            Apperence.getWindow().setVisible(false);
+            new CoreSystem();
+        }
+    }
+
 }
