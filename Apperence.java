@@ -2,13 +2,14 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.geom.RoundRectangle2D;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 
 import java.util.ArrayList;
 
@@ -31,8 +32,11 @@ public class Apperence {
     static void uiBuildUp(){
 
         window = new JFrame("Easy 2048");
+        window.setUndecorated(true);
+        window.setShape(new RoundRectangle2D.Double(0, 0, 500, 750, 50, 50));
         window.setSize(500, 750);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setLocationByPlatform(true);
         window.setVisible(true);
 
         header = new JLabel("The Easy 2048 Game", SwingConstants.CENTER);
@@ -153,23 +157,5 @@ public class Apperence {
         return closeGame;
     }
 
-
-}
-
-class ButtonClickListener implements ActionListener{
-    
-    public void actionPerformed(ActionEvent ev){
-
-        JButton source = (JButton)ev.getSource();
-        //System.out.println(source);
-        CoreSystem.clearAllValue();
-        CoreSystem.clearIntScore();
-        if(source == Apperence.getCloseGameButton() || source.getText().equals("Quit")) System.exit(1);
-        else {
-            Apperence.getPopup().setVisible(false);
-            Apperence.getWindow().setVisible(false);
-            new CoreSystem();
-        }
-    }
 
 }
