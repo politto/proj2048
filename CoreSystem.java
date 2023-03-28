@@ -2,24 +2,19 @@ import java.util.ArrayList;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 
 import java.lang.IndexOutOfBoundsException;
 
 public class CoreSystem implements App2048interface{
 
-    private ArrayList<ArrayList<NumBox>> numMap;
+    private static ArrayList<ArrayList<NumBox>> numMap;
     
-    private int intScore;
-    private boolean isMoved;
-    private String fontName = "freesiaUPC";
+    private static int intScore;
+    private static boolean isMoved;
 
-
-    
-    
     public CoreSystem(){
-
+        
         Apperence.uiBuildUp();
         numMap = new ArrayList<ArrayList<NumBox>>(4); 
         startgame();
@@ -263,6 +258,10 @@ public class CoreSystem implements App2048interface{
     public void clearIntScore(){
         intScore = 0;
         System.out.println(intScore);
+    }
+
+    public static int getScore(){
+        return intScore;
     }
 
     static ArrayList<ArrayList<NumBox>> getNumMap(){

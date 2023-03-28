@@ -2,14 +2,17 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 
-public class Apperence {
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import java.util.ArrayList;
+
+public static class Apperence {
 
     private static JFrame window;
     private static JFrame popup;
@@ -23,7 +26,11 @@ public class Apperence {
     private static JButton tryAgain;
     private static JButton closeGame;
 
+    private static String fontName = "freesiaUPC";
+
     static void uiBuildUp(){
+
+        
 
         header = new JLabel("The Easy 2048 Game", SwingConstants.CENTER);
         header.setPreferredSize(new Dimension(450,50));
@@ -33,8 +40,8 @@ public class Apperence {
         for (int i = 0; i < 4; i++){
             CoreSystem.getNumMap().add(new ArrayList<NumBox>());
             for (int j = 0; j < 4; j++){
-                numMap.get(i).add(new NumBox(" ", SwingConstants.CENTER));
-                NumBox NumBox = numMap.get(i).get(j);
+                CoreSystem.getNumMap().get(i).add(new NumBox(" ", SwingConstants.CENTER));
+                NumBox NumBox = CoreSystem.getNumMap().get(i).get(j);
                 NumBox.setPreferredSize(new Dimension(100, 100));
                 NumBox.setFont(new Font(fontName, Font.PLAIN, 40));
                 NumBox.setOpaque(true);
@@ -55,7 +62,7 @@ public class Apperence {
         window.add(lbScore);
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
-                window.add(numMap.get(i).get(j));
+                window.add(CoreSystem.getNumMap().get(i).get(j));
             }
         }
         window.add(desc);
@@ -67,7 +74,7 @@ public class Apperence {
     static void painter(){
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
-                NumBox nb = numMap.get(i).get(j);
+                NumBox nb = CoreSystem.getNumMap().get(i).get(j);
                 nb.setBackground(nb.bgColorsSelection(nb.getValue()));
                 if(nb.getValue() > 64){
                     nb.setForeground(Color.WHITE);
@@ -100,7 +107,7 @@ public class Apperence {
         
         if (winOrLose.equals("win")) popupdesc1 = new JLabel("You win!", SwingConstants.CENTER);
         else popupdesc1 = new JLabel("GAME OVER", SwingConstants.CENTER);
-        popupdesc2 = new JLabel("score : " + intScore, SwingConstants.CENTER);
+        popupdesc2 = new JLabel("score : " + CoreSystem.getScore(), SwingConstants.CENTER);
         tryAgain = new JButton("Try again");
         closeGame = new JButton("Quit");
 
