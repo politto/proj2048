@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-
 import java.lang.IndexOutOfBoundsException;
 
 public class CoreSystem implements App2048interface{
@@ -16,7 +15,7 @@ public class CoreSystem implements App2048interface{
     public CoreSystem(){
         
         numMap = new ArrayList<ArrayList<NumBox>>(4); 
-        Apperence.uiBuildUp();
+        mainApperence.uiBuildUp();
         startgame();
         
     }
@@ -28,9 +27,9 @@ public class CoreSystem implements App2048interface{
         randomNumSpawn(false);
         randomNumSpawn(false);
         
-        Apperence.painter();
+        mainApperence.painter();
 
-        Apperence.getWindow().addKeyListener(new KeyAdapter() {
+        mainApperence.getWindow().addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
 
                 switch(e.getKeyCode()) {
@@ -61,7 +60,7 @@ public class CoreSystem implements App2048interface{
                     isMoved = !isMoved;
                 }
 
-                Apperence.painter();
+                mainApperence.painter();
                 cligame();
 
             }
@@ -154,7 +153,7 @@ public class CoreSystem implements App2048interface{
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox nextBox = numMap.get(0).get(0);
                 
-                if(NumBox.getValue() == 64) Apperence.gameOver("win");
+                if(NumBox.getValue() == 64) mainApperence.gameOver("win");
 
                 try{
                     switch (dir) {
@@ -178,7 +177,7 @@ public class CoreSystem implements App2048interface{
                     nextBox.increment();
                     NumBox.clearValue();
                     intScore++;
-                    Apperence.setScore(intScore);
+                    mainApperence.setScore(intScore);
                     isMoved = true;
                     alreadySumValue = 0;
                 }
@@ -240,7 +239,7 @@ public class CoreSystem implements App2048interface{
 
         if(over && intScore > 2) {
             System.out.println(intScore);
-            Apperence.gameOver("lose");
+            mainApperence.gameOver("lose");
         }
 
     }

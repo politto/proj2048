@@ -2,10 +2,10 @@
 public class Main {
     public static void main(String[] args) {
         CoreSystem a = new CoreSystem();
-        Apperence b = new Apperence();
+        mainApperence b = new mainApperence();
         useit(a, b);
     }
-    static void useit(CoreSystem a, Apperence b){
+    static void useit(CoreSystem a, mainApperence b){
         
     }
 }

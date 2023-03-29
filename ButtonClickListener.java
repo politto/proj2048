@@ -11,10 +11,10 @@ class ButtonClickListener implements ActionListener{
         //System.out.println(source);
         CoreSystem.clearAllValue();
         CoreSystem.clearIntScore();
-        if(source == Apperence.getCloseGameButton() || source.getText().equals("Quit")) System.exit(1);
+        if(source == mainApperence.getCloseGameButton() || source.getText().equals("Quit")) System.exit(1);
         else {
-            Apperence.getPopup().setVisible(false);
-            Apperence.getWindow().setVisible(false);
+            mainApperence.getPopup().setVisible(false);
+            mainApperence.getWindow().setVisible(false);
             new CoreSystem();
         }
     }

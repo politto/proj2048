@@ -10,10 +10,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 
 
-
 import java.util.ArrayList;
 
-public class Apperence {
+public class mainApperence {
 
     private static JFrame window;
     private static JFrame popup;
@@ -32,8 +31,8 @@ public class Apperence {
     static void uiBuildUp(){
 
         window = new JFrame("Easy 2048");
-        window.setUndecorated(true);
-        window.setShape(new RoundRectangle2D.Double(0, 0, 500, 750, 50, 50));
+        // window.setUndecorated(true);
+        // window.setShape(new RoundRectangle2D.Double(0, 0, 500, 750, 50, 50));
         window.setSize(500, 750);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationByPlatform(true);
@@ -41,7 +40,7 @@ public class Apperence {
 
         header = new JLabel("The Easy 2048 Game", SwingConstants.CENTER);
         header.setPreferredSize(new Dimension(450,50));
-        header.setFont(new Font("freesiaUPC", Font.PLAIN, 45));
+        header.setFont(new Font(fontName, Font.PLAIN, 45));
         lbScore = new JLabel("Score : ",SwingConstants.CENTER);
 
         for (int i = 0; i < 4; i++){
@@ -49,9 +48,8 @@ public class Apperence {
             for (int j = 0; j < 4; j++){
                 CoreSystem.getNumMap().get(i).add(new NumBox(" ", SwingConstants.CENTER));
                 NumBox NumBox = CoreSystem.getNumMap().get(i).get(j);
-                NumBox.setPreferredSize(new Dimension(100, 100));
-                NumBox.setFont(new Font(fontName, Font.PLAIN, 40));
-                NumBox.setOpaque(true);
+                
+
             }
         }
 
@@ -155,6 +153,10 @@ public class Apperence {
 
     static JButton getCloseGameButton(){
         return closeGame;
+    }
+
+    static String getFontName(){
+        return fontName;
     }
 
 
