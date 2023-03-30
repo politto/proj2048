@@ -1,11 +1,17 @@
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.Scanner;
+import java.util.InputMismatchException;
+
+import java.io.IOException;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import java.lang.IndexOutOfBoundsException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.NoSuchFileException;
 
 public class CoreSystem implements App2048interface{
 
@@ -21,6 +27,7 @@ public class CoreSystem implements App2048interface{
         numMap = new ArrayList<ArrayList<NumBox>>(4); 
         mainApperence.uiBuildUp();
         startgame();
+        loadHighScore();
         
     }
 
@@ -150,7 +157,7 @@ public class CoreSystem implements App2048interface{
                                 box.increment();
                                 index.clearValue();
                                 isSum=true;
-                                intScore+=box.getValue();
+                                setScore(getScore() + 1);
                                 
                                 break;
                             }else break ;
@@ -173,7 +180,7 @@ public class CoreSystem implements App2048interface{
                                 box.increment();
                                 index.clearValue();
                                 isSum=true;
-                                intScore+=box.getValue();
+                                setScore(getScore() + 1);
                                 
                                 break;
                             }else break ;
@@ -198,7 +205,7 @@ public class CoreSystem implements App2048interface{
                                 box.increment();
                                 index.clearValue();
                                 isSum=true;
-                                intScore+=box.getValue();
+                                setScore(getScore() + 1);
                                 
                                 break;
                             }else break ;
@@ -221,7 +228,7 @@ public class CoreSystem implements App2048interface{
                             box.increment();
                             index.clearValue();
                             isSum=true;
-                            intScore+=box.getValue();
+                            setScore(getScore() + 1);
                             
                             break;
                         }else break ;
@@ -302,6 +309,7 @@ public class CoreSystem implements App2048interface{
     }
 
     public static int getScore(){
+        System.out.println(intScore);
         return intScore;
     }
 
@@ -322,5 +330,23 @@ public class CoreSystem implements App2048interface{
         return numMap;
     }
     
+
+    static void loadHighScore(){
+        int highSc = 0;
+        try (Scanner input = new Scanner(Paths.get("highscore.txt"))){
+            highSc = input.nextInt();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("doesn't match input.");
+        }
+        catch (NoSuchFileException e){
+            System.out.println("File not found.");
+        }
+        catch (IOException e){
+            System.out.println("Error ai rai wa");
+        }
+        setHighScore(highSc);
+
+    }
 
 }
