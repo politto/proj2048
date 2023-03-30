@@ -54,7 +54,7 @@ public class CoreSystem implements App2048interface{
                         moveDown();
                         break;
                 }
-
+    
                 if (isMoved||isSum) {
                     randomNumSpawn(true);
                     isMoved = false;
@@ -63,12 +63,12 @@ public class CoreSystem implements App2048interface{
                 isGameOver();
                 mainApperence.painter();
                 cligame();
-
+    
             }
         });
-
+    
     }
-
+    
     private void moveLeft() {
         for (int i = 0; i < 4; i++) {
             int k = 0;
@@ -85,7 +85,7 @@ public class CoreSystem implements App2048interface{
             }
         }
     }
-
+    
     private void moveRight() {
         for (int i = 0; i < 4; i++) {
             int k = 3;
@@ -96,6 +96,7 @@ public class CoreSystem implements App2048interface{
                         numMap.get(i).get(k).setValue(box.getValue());
                         box.clearValue();
                         isMoved = true;
+                        
                     }
                     k--;
                 }
@@ -113,6 +114,7 @@ public class CoreSystem implements App2048interface{
                         numMap.get(k).get(j).setValue(box.getValue());
                         box.clearValue();
                         isMoved = true;
+                       
                     }
                     k--;
                 }
@@ -130,6 +132,7 @@ public class CoreSystem implements App2048interface{
                         numMap.get(k).get(j).setValue(box.getValue());
                         box.clearValue();
                         isMoved = true;
+                        
                     }
                     k++;
                 }
@@ -137,7 +140,7 @@ public class CoreSystem implements App2048interface{
         }
     }
     
-
+    
     private void numChangeLeft() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
@@ -150,7 +153,11 @@ public class CoreSystem implements App2048interface{
                                 box.increment();
                                 index.clearValue();
                                 isSum=true;
-                                intScore+=box.getValue();
+                              
+                                setScore(getScore() + box.getValue());
+                                if(getHighScore() < getScore()) setHighScore(getScore());
+                                System.out.println(highScore);
+                                mainApperence.setScore(getScore(), getHighScore());
                                 
                                 break;
                             }else break ;
@@ -160,7 +167,7 @@ public class CoreSystem implements App2048interface{
             }
         }
     }
-
+    
     private void numChangeRight() {
         for (int i = 0; i < 4; i++) {
             for (int j = 3; j > 0; j--) {
@@ -173,8 +180,11 @@ public class CoreSystem implements App2048interface{
                                 box.increment();
                                 index.clearValue();
                                 isSum=true;
-                                intScore+=box.getValue();
                                 
+                                setScore(getScore() + box.getValue());
+                                if(getHighScore() < getScore()) setHighScore(getScore());
+                                System.out.println(highScore);
+                                mainApperence.setScore(getScore(), getHighScore());
                                 break;
                             }else break ;
                         }
@@ -184,8 +194,6 @@ public class CoreSystem implements App2048interface{
         }
         
     }
-
-
     private void numChangeUp() {
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 3; i++) {
@@ -198,8 +206,10 @@ public class CoreSystem implements App2048interface{
                                 box.increment();
                                 index.clearValue();
                                 isSum=true;
-                                intScore+=box.getValue();
-                                
+                                setScore(getScore() + box.getValue());
+                                if(getHighScore() < getScore()) setHighScore(getScore());
+                                System.out.println(highScore);
+                                mainApperence.setScore(getScore(), getHighScore());
                                 break;
                             }else break ;
                         }
@@ -221,8 +231,10 @@ public class CoreSystem implements App2048interface{
                             box.increment();
                             index.clearValue();
                             isSum=true;
-                            intScore+=box.getValue();
-                            
+                            setScore(getScore() + box.getValue());
+                            if(getHighScore() < getScore()) setHighScore(getScore());
+                            System.out.println(highScore);
+                            mainApperence.setScore(getScore(), getHighScore());
                             break;
                         }else break ;
                     }
@@ -230,8 +242,7 @@ public class CoreSystem implements App2048interface{
             } 
         }
     }
-}
-
+    }
 
     private void randomNumSpawn(boolean midgame){
 
