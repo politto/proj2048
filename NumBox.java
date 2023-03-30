@@ -19,16 +19,16 @@ import javax.swing.border.*;
 public class NumBox extends JLabel{
 
     private int value;
-    private int roundTR = 50;
-    private int roundTL = 50;
-    private int roundBR = 50;
-    private int roundBL = 50;
+    private int roundTR = 25;
+    private int roundTL = 25;
+    private int roundBR = 25;
+    private int roundBL = 25;
 
     NumBox(String txt, int property){
         super(txt,property);
         this.setPreferredSize(new Dimension(100, 100));
         this.setFont(new Font(mainApperence.getFontName(), Font.PLAIN, 40));
-        //paintComponent((Graphics)this);
+        
         this.setOpaque(false);
     }
 
@@ -176,54 +176,54 @@ public class NumBox extends JLabel{
 
     public Color bgColorsSelection(int num) {
 
-        Color ret = new Color(126,171,139);
+        Color ret = new Color(126,171,139, 200);
         switch(num){
             case(0): {
-                ret = new Color(126,171,139);
+                ret = new Color(126,171,139, 200);
                 break;
             }
             case(2): {
-                ret = new Color(193,183,132);
+                ret = new Color(193,183,132, 200);
                 break;
             }
             case(4): {
-                ret = new Color(190,175,95);
+                ret = new Color(190,175,95, 200);
                 break;
             }
             case(8): {
-                ret = new Color(150,140,49);
+                ret = new Color(150,140,49, 200);
                 break;
             }
             case(16): {
-                ret = new Color(110,100,55);
+                ret = new Color(110,100,55, 200);
                 break;
             }
             case(32): {
-                ret = new Color(190,190,190);
+                ret = new Color(190,190,190, 200);
                 break;
             }
             case(64): {
-                ret = new Color(115,115,90);
+                ret = new Color(115,115,90, 200);
                 break;
             }
             case(128): {
-                ret = new Color(81, 81, 52);
+                ret = new Color(81, 81, 52, 200);
                 break;
             }
             case(256): {
-                ret = new Color(45, 45, 30);
+                ret = new Color(45, 45, 30, 200);
                 break;
             }
             case(512): {
-                ret = new Color(75,40,30);
+                ret = new Color(75,40,30, 200);
                 break;
             }
             case(1024): {
-                ret = new Color(38,6,6);
+                ret = new Color(38,6,6, 200);
                 break;
             }
             case(2048): {
-                ret = new Color(219, 234, 79);
+                ret = new Color(219, 234, 79, 200);
                 break;
             }
         }

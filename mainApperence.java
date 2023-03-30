@@ -1,8 +1,11 @@
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,6 +23,7 @@ public class mainApperence {
     private static JLabel desc;
     private static JLabel desc2;
     private static JLabel lbScore;
+    
 
     private static JLabel popupdesc1;
     private static JLabel popupdesc2;
@@ -31,8 +35,7 @@ public class mainApperence {
     static void uiBuildUp(){
 
         window = new JFrame("Easy 2048");
-        // window.setUndecorated(true);
-        // window.setShape(new RoundRectangle2D.Double(0, 0, 500, 750, 50, 50));
+        window.setBackground(new Color(84,25,48));
         window.setSize(500, 750);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationByPlatform(true);
@@ -41,7 +44,10 @@ public class mainApperence {
         header = new JLabel("The Easy 2048 Game", SwingConstants.CENTER);
         header.setPreferredSize(new Dimension(450,50));
         header.setFont(new Font(fontName, Font.PLAIN, 45));
-        lbScore = new JLabel("Score : ",SwingConstants.CENTER);
+        header.setForeground(new Color(255, 255, 255));
+        
+        lbScore = new JLabel("Score : 0, HighScore : 0",SwingConstants.CENTER);
+        // lbScore.setForeground(new Color(255, 255, 255));
 
         for (int i = 0; i < 4; i++){
             CoreSystem.getNumMap().add(new ArrayList<NumBox>());
@@ -56,9 +62,12 @@ public class mainApperence {
         desc = new JLabel("Use your Keyboard arrow keys to ", SwingConstants.CENTER);
         desc.setPreferredSize(new Dimension(450, 50));
         desc.setFont(new Font(fontName, Font.PLAIN, 30));
+        // desc.setForeground(new Color(255, 255, 255));
+        
         desc2 = new JLabel("play this game[^v<>]", SwingConstants.CENTER);
         desc2.setPreferredSize(new Dimension(450, 50));
         desc2.setFont(new Font(fontName, Font.PLAIN, 30));
+        // desc2.setForeground(new Color(255, 255, 255));
         lbScore.setPreferredSize(new Dimension(450, 100));
         lbScore.setFont(new Font(fontName, Font.PLAIN, 30));
         window.setLayout(new FlowLayout());
@@ -97,8 +106,8 @@ public class mainApperence {
         return window;
     }
 
-    static void setScore(int sc){
-        lbScore.setText("Score : " + sc);
+    static void setScore(int sc, int highsc){
+        lbScore.setText("Score : " + sc + " Highscore :" + highsc);
     }
 
     //If game over, do this method.

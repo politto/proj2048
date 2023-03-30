@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.Scanner;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -10,6 +12,7 @@ public class CoreSystem implements App2048interface{
     private static ArrayList<ArrayList<NumBox>> numMap;
     
     private static int intScore;
+    private static int highScore;
     private static boolean isMoved;
 
     public CoreSystem(){
@@ -153,7 +156,7 @@ public class CoreSystem implements App2048interface{
                 NumBox NumBox = numMap.get(i).get(j);
                 NumBox nextBox = numMap.get(0).get(0);
                 
-                if(NumBox.getValue() == 64) mainApperence.gameOver("win");
+                if(NumBox.getValue() == 256) mainApperence.gameOver("win");
 
                 try{
                     switch (dir) {
@@ -176,8 +179,10 @@ public class CoreSystem implements App2048interface{
                     alreadySumValue = NumBox.getValue();
                     nextBox.increment();
                     NumBox.clearValue();
-                    intScore++;
-                    mainApperence.setScore(intScore);
+                    setScore(getScore() + 1);
+                    if(getHighScore() < getScore()) setHighScore(getScore());
+                    System.out.println(highScore);
+                    mainApperence.setScore(getScore(), getHighScore());
                     isMoved = true;
                     alreadySumValue = 0;
                 }
@@ -262,6 +267,18 @@ public class CoreSystem implements App2048interface{
 
     public static int getScore(){
         return intScore;
+    }
+
+    public static void setScore(int num){
+        intScore = num;
+    }
+
+    public static int getHighScore(){
+        return highScore;
+    }
+
+    public static void setHighScore(int num){
+        highScore = num;
     }
 
     static ArrayList<ArrayList<NumBox>> getNumMap(){
