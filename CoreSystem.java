@@ -14,6 +14,7 @@ public class CoreSystem implements App2048interface{
     private static int intScore;
     private static int highScore;
     private static boolean isMoved;
+    private static boolean isSum;
 
     public CoreSystem(){
         
@@ -37,32 +38,29 @@ public class CoreSystem implements App2048interface{
 
                 switch(e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
-                        moveLeft();
-                        numChangeOnPressed("west");
+                        numChangeLeft();
                         moveLeft();
                         break;
                     case KeyEvent.VK_RIGHT:
-                        moveRight();
-                        numChangeOnPressed("east");
+                        numChangeRight();
                         moveRight();
                         break;
                     case KeyEvent.VK_UP:
-                        moveUp();
-                        numChangeOnPressed("north");
+                        numChangeUp();
                         moveUp();
                         break;
                     case KeyEvent.VK_DOWN:
-                        moveDown();
-                        numChangeOnPressed("sounth");
+                        numChangeDown();
                         moveDown();
                         break;
                 }
 
-                if (isMoved) {
+                if (isMoved||isSum) {
                     randomNumSpawn(true);
-                    isMoved = !isMoved;
+                    isMoved = false;
+                    isSum=false;
                 }
-
+                isGameOver();
                 mainApperence.painter();
                 cligame();
 
@@ -140,61 +138,99 @@ public class CoreSystem implements App2048interface{
     }
     
 
-    private void numChangeOnPressed(String dir){
-
-        int beginx = 0;
-        int beginy = 0;
-        int termimatex = 4;
-        int termimatey = 4;
-        int alreadySumValue = 0;
-        boolean mayOver = false;
-        
-        for (int i = beginx; i < termimatex; i++){
-            alreadySumValue = 0;
-            for (int j = beginy; j < termimatey; j++){
-
-                NumBox NumBox = numMap.get(i).get(j);
-                NumBox nextBox = numMap.get(0).get(0);
-                
-                if(NumBox.getValue() == 256) mainApperence.gameOver("win");
-
-                try{
-                    switch (dir) {
-                        case "north" : nextBox = numMap.get(i - 1).get(j); break;
-                        case "east" : nextBox = numMap.get(i).get(j + 1); break;
-                        case "sounth" : nextBox = numMap.get(i + 1).get(j); break;
-                        case "west" : nextBox = numMap.get(i).get(j - 1); break;
-                        default : System.out.println("Direction input error!(2)"); System.exit(1);
+    private void numChangeLeft() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 3; j++) {
+                NumBox box = numMap.get(i).get(j);
+                if(box.getValue()!=0){
+                    for(int k=j+1;k<4;k++){
+                        NumBox index= numMap.get(i).get(k);
+                        if(index.getValue()!=0){
+                            if(index.getValue()==box.getValue()){
+                                box.increment();
+                                index.clearValue();
+                                isSum=true;
+                                intScore+=box.getValue();
+                                
+                                break;
+                            }else break ;
+                        }
                     }
-                }
-                catch (ArrayIndexOutOfBoundsException e){
-                    continue;
-                }
-                catch (IndexOutOfBoundsException e){
-                    continue;
-                }
-
-                if(NumBox.isEquals(nextBox) && NumBox.getValue() != 0 && nextBox.getValue() != 0 && NumBox.getValue() != alreadySumValue) {
-                        
-                    alreadySumValue = NumBox.getValue();
-                    nextBox.increment();
-                    NumBox.clearValue();
-                    setScore(getScore() + 1);
-                    if(getHighScore() < getScore()) setHighScore(getScore());
-                    System.out.println(highScore);
-                    mainApperence.setScore(getScore(), getHighScore());
-                    isMoved = true;
-                    alreadySumValue = 0;
-                }
-                else {
-                    mayOver = true;
-                }
-
+                } 
             }
         }
-
-        if (mayOver) isGameOver();
     }
+
+    private void numChangeRight() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 3; j > 0; j--) {
+                NumBox box = numMap.get(i).get(j);
+                if(box.getValue()!=0){
+                    for(int k = j-1;k>=0;k--){
+                        NumBox index= numMap.get(i).get(k);
+                        if(index.getValue()!=0){
+                            if(index.getValue()==box.getValue()){
+                                box.increment();
+                                index.clearValue();
+                                isSum=true;
+                                intScore+=box.getValue();
+                                
+                                break;
+                            }else break ;
+                        }
+                    }
+                } 
+            }
+        }
+        
+    }
+
+
+    private void numChangeUp() {
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 3; i++) {
+                NumBox box = numMap.get(i).get(j);
+                if(box.getValue()!=0){
+                    for(int k=i+1;k<4;k++){
+                        NumBox index= numMap.get(k).get(j);
+                        if(index.getValue()!=0){
+                            if(index.getValue()==box.getValue()){
+                                box.increment();
+                                index.clearValue();
+                                isSum=true;
+                                intScore+=box.getValue();
+                                
+                                break;
+                            }else break ;
+                        }
+                    }
+                } 
+            }
+        }
+    }
+    
+    private void numChangeDown(){
+    for (int j = 0; j < 4; j++) {
+        for (int i = 3; i >0; i--) {
+            NumBox box = numMap.get(i).get(j);
+            if(box.getValue()!=0){
+                for(int k=i-1;k>=0;k--){
+                    NumBox index= numMap.get(k).get(j);
+                    if(index.getValue()!=0){
+                        if(index.getValue()==box.getValue()){
+                            box.increment();
+                            index.clearValue();
+                            isSum=true;
+                            intScore+=box.getValue();
+                            
+                            break;
+                        }else break ;
+                    }
+                }
+            } 
+        }
+    }
+}
 
 
     private void randomNumSpawn(boolean midgame){
