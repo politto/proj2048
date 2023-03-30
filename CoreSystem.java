@@ -4,6 +4,9 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 
 import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -300,6 +303,7 @@ public class CoreSystem implements App2048interface{
         if(over && intScore > 2) {
             System.out.println(intScore);
             mainApperence.gameOver("lose");
+            saveHighScore();
         }
 
     }
@@ -359,6 +363,20 @@ public class CoreSystem implements App2048interface{
         }
         setHighScore(highSc);
 
+    }
+
+    static void saveHighScore(){
+        Path path = Paths.get("highscore.txt");
+        try (FileWriter fw = new FileWriter(path.getFileName().toString(), false);
+        PrintWriter output = new PrintWriter(fw);) {
+            output.println(getHighScore());
+        }
+        catch (SecurityException | FileNotFoundException e) {
+            System.out.println("Cannot access file because of Security or not found issue.");
+        }
+        catch (IOException e) {
+            System.out.println("Some IOexception occured ...");
+        }
     }
 
 }
