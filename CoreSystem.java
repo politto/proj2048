@@ -27,18 +27,19 @@ public class CoreSystem implements App2048interface{
         numMap = new ArrayList<ArrayList<NumBox>>(4); 
         mainApperence.uiBuildUp();
         startgame();
-        loadHighScore();
+
         
     }
 
     //startGame method
     void startgame(){
         
-
+        loadHighScore();
         randomNumSpawn(false);
         randomNumSpawn(false);
         
         mainApperence.painter();
+        mainApperence.setScore(getScore(), getHighScore());
 
         mainApperence.getWindow().addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
