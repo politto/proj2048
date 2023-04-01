@@ -32,6 +32,7 @@ public class mainApperence {
 
     private static String fontName = "freesiaUPC";
 
+
     static void uiBuildUp(){
 
         window = new JFrame("Easy 2048");
