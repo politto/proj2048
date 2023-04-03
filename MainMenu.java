@@ -14,7 +14,10 @@ public class MainMenu extends JFrame {
     setLabel();
     setButton();
     setVisible(true);
-    }
+
+    SoundPlayer sp = new SoundPlayer();
+    sp.RandomPlayBGmusic();
+}
 
 void setFrame(){
     setBackground(new Color(84,25,48));

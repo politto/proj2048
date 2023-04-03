@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Timer;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
@@ -24,6 +23,8 @@ public class CoreSystem implements App2048interface{
     private static int highScore;
     private static boolean isMoved;
     private static boolean isSum;
+
+    private SoundPlayer sp = new SoundPlayer();
 
     public CoreSystem(){
         
@@ -66,6 +67,9 @@ public class CoreSystem implements App2048interface{
                         break;
                 }
     
+                if (isSum) sp.playSound("scoreplus.wav");
+                else if (isMoved) sp.playSound("move.wav");
+                else sp.playSound("stuck.wav");
                 if (isMoved||isSum) {
                     randomNumSpawn(true);
                     isMoved = false;

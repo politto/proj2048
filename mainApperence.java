@@ -1,21 +1,16 @@
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.geom.RoundRectangle2D;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 
-
 import java.util.ArrayList;
 
-public class mainApperence {
+public class mainApperence{
 
     private static JFrame window;
     private static JFrame popup;
@@ -31,7 +26,6 @@ public class mainApperence {
     private static JButton closeGame;
 
     private static String fontName = "freesiaUPC";
-
 
     static void uiBuildUp(){
 
@@ -54,7 +48,7 @@ public class mainApperence {
             CoreSystem.getNumMap().add(new ArrayList<NumBox>());
             for (int j = 0; j < 4; j++){
                 CoreSystem.getNumMap().get(i).add(new NumBox(" ", SwingConstants.CENTER));
-                NumBox NumBox = CoreSystem.getNumMap().get(i).get(j);
+                // NumBox NumBox = CoreSystem.getNumMap().get(i).get(j);
                 
 
             }
