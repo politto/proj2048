@@ -67,9 +67,9 @@ public class CoreSystem implements App2048interface{
                         break;
                 }
     
-                if (isSum) sp.playSound("scoreplus.wav");
-                else if (isMoved) sp.playSound("move.wav");
-                else sp.playSound("stuck.wav");
+                if (isSum) sp.playSound("scoreplus.wav", 100);
+                else if (isMoved) sp.playSound("move.wav", 100);
+                else sp.playSound("stuck.wav", 100);
                 if (isMoved||isSum) {
                     randomNumSpawn(true);
                     isMoved = false;
